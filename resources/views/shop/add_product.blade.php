@@ -20,10 +20,26 @@
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{asset('css/sweetalert.css')}}">
-    
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+
     <title>Thêm sản phẩm</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <style>
+		label.error{
+			color: red;
+            font-size: 14px;
+            display: block;
+            font-weight: 400;
+		}
+        .error {
+            color: #5a5c69;
+            /* font-size: 7rem; */
+            font-size: 16px;
+            line-height: 1;
+           
+        }
+	</style>
 </head>
 
 
@@ -58,7 +74,7 @@
                     <div class="row">
                         
                         <!-- First Column -->
-                    <form action="{{route('shop_add_product')}}" method="POST">
+                    <form action="{{route('shop_add_products')}}" method="GET" enctype="multipart/form-data" id="form_add_product">
                         @csrf
                         <div class="col-lg-10"> 
                             
@@ -68,119 +84,23 @@
                                     <h4 class="m-0 font-weight-bold text-primary">Thông Tin Cơ Bản</h4>
                                 </div>
                                 <div class="card-body " >
-                                    <div class="add_product_info"> 
-                                        <p class="text-gray-900 p-3 m-0">Hình ảnh sản phẩm (tối đa 5 hình)</p>
-                                        <div id="upfile">
-                                            <div class="upfile" >
-                                                <div class="uploadfile" id="uploadfile">
-                                                    <div class="image">
-                                                        <img src="" alt="Image" id="fileup" class="fileup" >
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="icon">
-                                                            <i class="fas fa-cloud-upload-alt"></i>
-                                                        </div>
-                                                    
-                                                    </div>
-                                                    <div id="cancel-btn" class="cancel-btn">
-                                                        <i class="fas fa-times"></i>
-                                                    </div>
-                                    
-                                                </div>
-                                                <span onclick="defaultBtnActive()" class="custom-btn" id="custom-btn">Chọn Hình Ảnh</span>
-                                                <input id="default-btn" type="file" multiple="multiple" name="product_img" accept="image/jpeg, image/png, image/jpg" hidden>
-                                            </div>
-                                            <div class="upfile" >
-                                                <div class="uploadfile" id="uploadfile1">
-                                                    <div class="image">
-                                                        <img src="" alt="Image" id="fileup1" class="fileup">
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="icon">
-                                                            <i class="fas fa-cloud-upload-alt"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div id="cancel-btn" class="cancel-btn1">
-                                                        <i class="fas fa-times"></i>
-                                                    </div>
-                                    
-                                                </div>
-                                                <span onclick="defaultBtnActive1()" class="custom-btn" id="custom-btn1">Chọn Hình Ảnh</span>
-                                                <input id="default-btn1" type="file" multiple="multible" hidden name="product_img1">
-                                            </div>
-                                            <div class="upfile" >
-                                                <div class="uploadfile" id="uploadfile2">
-                                                    <div class="image">
-                                                        <img src="" alt="Image" id="fileup2" >
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="icon">
-                                                            <i class="fas fa-cloud-upload-alt"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div id="cancel-btn" class="cancel-btn2">
-                                                        <i class="fas fa-times"></i>
-                                                    </div>
-                                    
-                                                </div>
-                                                <span onclick="defaultBtnActive2()" class="custom-btn" id="custom-btn2">Chọn Hình Ảnh</span>
-                                                <input id="default-btn2" type="file" multiple="multible" hidden  name="product_img2">
-                                            </div>
-                                            <div class="upfile" >
-                                                <div class="uploadfile" id="uploadfile3">
-                                                    <div class="image">
-                                                        <img src="" alt="Image" id="fileup3" >
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="icon">
-                                                            <i class="fas fa-cloud-upload-alt"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div id="cancel-btn" class="cancel-btn3">
-                                                        <i class="fas fa-times"></i>
-                                                    </div>
-                                    
-                                                </div>
-                                                <span onclick="defaultBtnActive3()" class="custom-btn" id="custom-btn3">Chọn Hình Ảnh</span>
-                                                <input id="default-btn3" type="file" multiple="multible" hidden name="product_img3">
-                                            </div>
-                                            <div class="upfile" >
-                                                <div class="uploadfile" id="uploadfile4">
-                                                    <div class="image">
-                                                        <img src="" alt="Image" id="fileup4" >
-                                                    </div>
-                                                    <div class="content">
-                                                        <div class="icon">
-                                                            <i class="fas fa-cloud-upload-alt"></i>
-                                                        </div>
-                                                    </div>
-                                                    <div id="cancel-btn" class="cancel-btn4">
-                                                        <i class="fas fa-times"></i>
-                                                    </div>
-                                    
-                                                </div>
-                                                <span onclick="defaultBtnActive4()" class="custom-btn" id="custom-btn4">Chọn Hình Ảnh</span>
-                                                <input id="default-btn4" type="file" multiple="multible" hidden name="product_img4">
-                                            </div>
-                                        </div>
-                                    </div>        
                                     <div class="add_product_info" style="display: flex;">
                                         <div class="add_product_info_t">
                                             <p class="text-gray-900 p-3 m-0" >Tên sản phẩm</p>
                                         </div>
-                                        <input max="150" type="text" name="product_name" id="product_name" class="product_name" placeholder="Nhập tên sản phẩm">
+                                        <input  type="text" name="product_name" id="product_name" class="product_name" placeholder="Nhập tên sản phẩm" required>
                                     </div>
                                     <div class="add_product_info" style="display: flex;">
                                         <div class="add_product_info_t">
                                             <p class="text-gray-900 p-3 m-0" >Giá sản phẩm</p>
                                         </div>
-                                        <input  type="number" min="1" max="999999999"  name="product_price" id="product_price" class="product_name" placeholder="Nhập tên sản phẩm">
+                                        <input  type="number" min="1" max="999999999"  name="product_price" id="product_price" class="product_name" placeholder="Nhập giá sản phẩm" required>
                                     </div>
                                     <div class="add_product_info" style="display: flex;">
                                         <div class="add_product_info_t">
                                             <p class="text-gray-900 p-3 m-0" >Ngành hàng</p>
                                         </div>
-                                        <select name="category" id="category" class="product_name choose_category">
+                                        <select name="category" id="category" class="product_name choose_category" required>
                                             <option value="">--- Chọn Ngành Hàng ---</option> 
                                             @foreach($category as $category)
                                                 <option value="{{$category -> id }}">{{$category -> categoryName}}</option> 
@@ -200,7 +120,7 @@
                                         <div class="add_product_info_t">
                                             <p class="text-gray-900 p-3 m-0" >Mô tả sản phẩm</p>
                                         </div>
-                                        <textarea class="description_product" name="description" type="textarea" resize="none" rows="2" minrows="9" maxrows="26" autosize="true" maxlength="Infinity" restrictiontype="input" max="Infinity" min="-Infinity"  style="resize: none; min-height: 209.6px; height: 209.6px;">
+                                        <textarea  id="description" class="description_product" name="description" type="textarea" resize="none" autosize="true"  style="resize: none; min-height: 209.6px; height: 209.6px;" >
                                         </textarea>                             
                                 </div>
                             </div>
@@ -223,7 +143,7 @@
                                                         Nhóm phân loại 1
                                                     </div>
                                                     <div class="variation_panel_right">
-                                                        <input name="variation_option" class="variation_panel_right_normals" placeholder="Ví dụ: màu sắc v.v">
+                                                        <input name="variation_option" id="variation_option" class="variation_panel_right_normals" placeholder="Ví dụ: màu sắc v.v">
                                                         
                                                     </div>
                                                 </div>   
@@ -234,16 +154,16 @@
                                                     <div class="variation_panel_right">
                                                         <div class="variation_panel_right_item" >
                                                             <div class="variation_panel_right_items" id="variation_div" style="display:flex;">
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name">
+                                                                <input id="variation_name" class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name">
                                                             </div>
                                                             <div class="variation_panel_right_items" id="variation_div"  >
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name1">
+                                                                <input id="variation_name1" class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name1">
                                                             </div>
                                                             <div class="variation_panel_right_items" id="variation_div"  >
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name2">
+                                                                <input id="variation_name2" class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name2">
                                                             </div>
                                                             <div class="variation_panel_right_items" id="variation_div" >
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name3">
+                                                                <input id="variation_name3" class="variation_panel_right_normal" placeholder="Ví dụ: Trắng, Đỏ v.v"  name="variation_option_name3">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -255,7 +175,7 @@
                                                         Nhóm phân loại 2
                                                     </div>
                                                     <div class="variation_panel_right">
-                                                        <input name="variations_options" class="variation_panel_right_normals" placeholder="Ví dụ: Size v.v">
+                                                        <input id="variations_options" name="variations_options" class="variation_panel_right_normals" placeholder="Ví dụ: Size v.v">
                                                     </div>
                                                 </div>   
                                                 <div class="add_product_var_bot">
@@ -265,16 +185,16 @@
                                                     <div class="variation_panel_right">
                                                         <div class="variation_panel_right_item">
                                                             <div class="variation_panel_right_items">
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name">
+                                                                <input id="variations_name" class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name">
                                                             </div>
                                                             <div class="variation_panel_right_items">
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name1">
+                                                                <input id="variations_name1" class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name1">
                                                             </div>
                                                             <div class="variation_panel_right_items">
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name2">
+                                                                <input id="variations_name2" class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name2">
                                                             </div>
                                                             <div class="variation_panel_right_items">
-                                                                <input class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name3">
+                                                                <input id="variations_name3" class="variation_panel_right_normal" placeholder="Ví dụ: S, M v.v" name="variations_options_name3">
                                                             </div>
                                                             
                                                         </div>
@@ -343,187 +263,9 @@
     <script src="js/sb-admin-2.min.js"></script>
    
 <!-- include jQuery library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
-
-<script>
-    $('#fileup').css('display','none');
-     const wrapper = document.querySelector("#uploadfile");
-         const defaultBtn = document.querySelector("#default-btn");
-         const customBtn = document.querySelector("#custom-btn");
-         const cancelBtn = document.querySelector(".cancel-btn ");
-         const img = document.querySelector("#fileup");
-         let regExp = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-         function defaultBtnActive(){
-           defaultBtn.click();
-         }
-         defaultBtn.addEventListener("change", function(){
-           const file = this.files[0];
-           if(file){
-             const reader = new FileReader();
-             reader.onload = function(){
-               const result = reader.result;
-               
-               img.src = result;
-               wrapper.classList.add("active");
-               $('#fileup').css('display','block');
-               
-
-             }
-             cancelBtn.addEventListener("click", function(){
-                defaultBtn.value = "";
-               img.src = "";
-               wrapper.classList.remove("active");
-               $('#fileup').css('display','none');
-               })
-             reader.readAsDataURL(file);
-           }
-           if(this.value){
-             let valueStore = this.value.match(regExp);
-             
-           }
-         });
-    
-</script>
-<script>
-    $('#fileup1').css('display','none');
-    const wrapper1 = document.querySelector("#uploadfile1");
-    const defaultBtn1 = document.querySelector("#default-btn1");
-    const customBtn1 = document.querySelector("#custom-btn1");
-    const cancelBtn1 = document.querySelector(".cancel-btn1");
-    const img1 = document.querySelector("#fileup1");
-    let regExp1 = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-    function defaultBtnActive1(){
-        defaultBtn1.click();
-    }
-    defaultBtn1.addEventListener("change", function(){
-        const file1 = this.files[0];
-        if(file1){
-            const reader1 = new FileReader();
-            reader1.onload = function(){
-                const result1 = reader1.result;
-                img1.src = result1;
-                wrapper1.classList.add("active");
-                $('#fileup1').css('display','block');
-            }
-            cancelBtn1.addEventListener("click", function(){
-                defaultBtn1.value = "";
-                img1.src = "";
-                wrapper1.classList.remove("active");
-                $('#fileup1').css('display','none');
-            })
-            reader1.readAsDataURL(file1);
-        }
-           if(this.value){
-             let valueStore1 = this.value.match(regExp1);
-            
-           }
-         });
-</script>
-<script>
-    $('#fileup2').css('display','none');
-    const wrapper2 = document.querySelector("#uploadfile2");
-    const defaultBtn2 = document.querySelector("#default-btn2");
-    const customBtn2 = document.querySelector("#custom-btn2");
-    const cancelBtn2 = document.querySelector(".cancel-btn2");
-    const img2 = document.querySelector("#fileup2");
-    let regExp2 = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-    function defaultBtnActive2(){
-        defaultBtn2.click();
-    }
-    defaultBtn2.addEventListener("change", function(){
-        const file2 = this.files[0];
-        if(file2){
-            const reader2 = new FileReader();
-            reader2.onload = function(){
-                const result2 = reader2.result;
-                img2.src = result2;
-                wrapper2.classList.add("active");
-                $('#fileup2').css('display','block');
-            }
-            cancelBtn2.addEventListener("click", function(){
-                defaultBtn2.value = "";
-                img2.src = "";
-                wrapper2.classList.remove("active");
-                $('#fileup2').css('display','none');
-            })
-            reader2.readAsDataURL(file2);
-        }
-           if(this.value){
-             let valueStore2 = this.value.match(regExp2);
-            
-           }
-         });
-</script>
-<script>
-    $('#fileup3').css('display','none');
-    const wrapper3 = document.querySelector("#uploadfile3");
-    const defaultBtn3 = document.querySelector("#default-btn3");
-    const customBtn3 = document.querySelector("#custom-btn3");
-    const cancelBtn3 = document.querySelector(".cancel-btn3");
-    const img3 = document.querySelector("#fileup3");
-    let regExp3 = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-    function defaultBtnActive3(){
-        defaultBtn3.click();
-    }
-    defaultBtn3.addEventListener("change", function(){
-        const file3 = this.files[0];
-        if(file3){
-            const reader3 = new FileReader();
-            reader3.onload = function(){
-                const result3 = reader3.result;
-                img3.src = result3;
-                wrapper3.classList.add("active");
-                $('#fileup3').css('display','block');
-            }
-            cancelBtn3.addEventListener("click", function(){
-                defaultBtn3.value = "";
-                img3.src = "";
-                wrapper3.classList.remove("active");
-                $('#fileup3').css('display','none');
-            })
-            reader3.readAsDataURL(file3);
-        }
-           if(this.value){
-             let valueStore3 = this.value.match(regExp3);
-            
-           }
-         });
-</script>
-<script>
-    $('#fileup4').css('display','none');
-    const wrapper4 = document.querySelector("#uploadfile4");
-    const defaultBtn4 = document.querySelector("#default-btn4");
-    const customBtn4 = document.querySelector("#custom-btn4");
-    const cancelBtn4 = document.querySelector(".cancel-btn4");
-    const img4 = document.querySelector("#fileup4");
-    let regExp4 = /[0-9a-zA-Z\^\&\'\@\{\}\[\]\,\$\=\!\-\#\(\)\.\%\+\~\_ ]+$/;
-    function defaultBtnActive4(){
-        defaultBtn4.click();
-    }
-    defaultBtn4.addEventListener("change", function(){
-        const file4 = this.files[0];
-        if(file4){
-            const reader4 = new FileReader();
-            reader4.onload = function(){
-                const result4 = reader4.result;
-                img4.src = result4;
-                wrapper4.classList.add("active");
-                $('#fileup4').css('display','block');
-            }
-            cancelBtn3.addEventListener("click", function(){
-                defaultBtn4.value = "";
-                img4.src = "";
-                wrapper4.classList.remove("active");
-                $('#fileup4').css('display','none');
-            })
-            reader4.readAsDataURL(file4);
-        }
-           if(this.value){
-             let valueStore4 = this.value.match(regExp4);
-            
-           }
-         });
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- include jQuery validate library -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -547,6 +289,116 @@
             });
         });
     })
+</script>
+<script>
+$("#form_add_product").validate({
+    rules: {
+		"product_name": {
+			required: true,
+			maxlength: 150,
+            minlength: 10,
+		},
+        "product_price": {
+            required: true,
+            number: true,
+            min: 1000,
+            max: 1000000000,
+        },
+        "category_id": {
+            required: true,
+        },
+        "description": {
+            required: true,
+            minlength: 10,
+            maxlength: 1000,
+        },
+        "variation_option":{
+            maxlength: 14,
+        },
+        "variation_name":{
+            maxlength: 14,
+        },
+        "variation_name1":{
+            maxlength: 14,
+        },
+        "variation_name2":{
+            maxlength: 14,
+        },
+        "variation_name3":{
+            maxlength: 14,
+        },
+        "variations_options":{
+            maxlength: 14,
+        },
+        "varations_name":{
+            maxlength: 14,
+        },
+        "varations_name1":{
+            maxlength: 14,
+        },
+        "varations_name2":{
+            maxlength: 14,
+        },
+        "varations_name3":{
+            maxlength: 14,
+        },
+	},
+    messages: {
+        "product_name": {
+			required: "Vui lòng nhập tên sản phẩm",
+			maxlength: "Tên sản phẩm không được quá 150 ký tự",
+            minlength: "Tên sản phẩm phải có ít nhất 10 ký tự",
+		},
+        "product_price": {
+            required: "Vui lòng nhập giá sản phẩm",
+            number: "Giá sản phẩm phải là số",
+            min: "Giá sản phẩm phải lớn hơn 1000",
+            max: "Giá sản phẩm phải nhỏ hơn 1000000000",
+        },
+        "category_id": {
+            required: "Vui lòng chọn danh mục sản phẩm",
+        },
+        "description": {
+            required: "Vui lòng nhập mô tả sản phẩm",
+            maxlength: "Mô tả sản phẩm không được quá 1000 ký tự",
+            minlength: "Mô tả sản phẩm phải có ít nhất 10 ký tự",
+        },
+        "variation_option":{
+            maxlength: "Tên nhóm phân loại không được quá 14 ký tự",
+        },
+        "variation_name":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "variation_name1":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "variation_name2":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "variation_name3":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "variations_options":{
+            maxlength: "Tên nhóm phân loại không được quá 14 ký tự",
+        },
+        "varations_name":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "varations_name1":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "varations_name2":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+        "varations_name3":{
+            maxlength: "Tên phân loại không được quá 14 ký tự",
+        },
+    },
+    submitHandler: function(form) {
+        $(form).submit();
+    }
+
+});
 </script>
 </body>
 

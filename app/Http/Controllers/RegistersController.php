@@ -43,6 +43,7 @@ class RegistersController extends Controller
         return view('user.login');
     }
     public function login_user(Request $request){
+        $product_id = Session::get('product_id');
         $email= $request->email;
         $password=$request->password;
         $result= DB::table('users')->where('email',$email)->first();      
@@ -51,10 +52,25 @@ class RegistersController extends Controller
             Session:: put('user_id',$result->id);
             Session:: put('user_name',$result->lastname);
             Session:: put('user_email',$result->email);
-            return redirect()->route('index');
+            if($product_id){
+                return redirect()->route('detail_product',$product_id);
+            }else{
+                return redirect()->route('index');
+            }
         }else{
             return redirect()->route('login')->with('error','Đăng nhập thất bại');
         }
-        
+    }
+    public function logout_user(){
+        Session::forget('user_id');
+        Session::forget('user_name');
+        Session::forget('user_email');
+        // Session::forget('cart');
+        $product_id = Session::get('product_id');
+        if($product_id){
+            return redirect()->route('detail_product',$product_id);
+        }else{
+            return redirect()->route('index');
+        }
     }
 }

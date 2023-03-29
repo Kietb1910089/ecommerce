@@ -27,81 +27,11 @@
 <body>
     
     <header>
-        <div class="detail-top">
-            <div class="nav-bar-top">
-                <div class="nav-bar-top-left colum-5">
-                    <div class="nav-bar-top-left-select colum-2-5">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Kênh Người Bán
-                        </a>
-                    </div>
-                    <div class="nav-bar-top-left-select colum-3">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Chăm sóc khách hàng
-                        </a>
-                    </div>
-                    <div class="nav-bar-top-left-select colum-3">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Về Kenji
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-bar-top-right colum-5">
-                    <div class="nav-bar-top-right-connect colum-5">
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="nav-bar-bottom">
-                <div class="nav-bar-bottom-with-search">
-                    <div class="nav-bar-bottom-left">
-                        <a href="#">
-                            <img src="icon.jpg" alt="" class="icon-ecommerce">
-                        </a>
-                    </div>
-                    <div class="nav-bar-bottom-center">
-                        <div class="nav-bar-bottom-center-menu colum-0-5">
-                            <div class="colum-10">
-                                <svg  class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-menu-button-wide" viewBox="0 0 16 16">
-                                    <path  d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5v-2zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-13z"/>
-                                    <path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="nav-bar-bottom-center-search colum-9-5">
-                            <div class="colum-9">
-                                <input type="text" name="" class="input-search" placeholder=" Tìm kiếm trên Kenji...">
-                            </div>
-                            <div class="colum-1">
-                                <button type="submit" value="Submit" aria-label="button submit" class="button-icon-search">
-                                    <svg width="24" height="24"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" class="d7ed-SwZDZ2 d7ed-w34diS"><path d="M10 2a8 8 0 0 1 6.32 12.905l5.387 5.388-1.414 1.414-5.388-5.386A8 8 0 1 1 10 2Zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" fill="#6F787E" fill-rule="nonzero" ></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar-bottom-right">
-                        <div class="nav-bar-bottom-right-cart colum-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check icon-cart" viewBox="0 0 16 16">
-                                <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                              </svg>
-                        </div>
-                        <div class="button-user colum-10">
-                            <a href="{{route('login')}}">
-                                <button class="button-user-login">
-                                    <span id="span-user-login">Đăng nhập</span>
-                                </button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('header')
         
     </header>
     <main >
-        <div class="distance" style="font-family: Roboto, sans-serif;">
+        <div class="distance" style="font-family: Roboto, sans-serif; padding-top: 20px;" >
             <div class="container h-100">
               <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6">

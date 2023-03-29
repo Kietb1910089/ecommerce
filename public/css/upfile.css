@@ -7,7 +7,8 @@
 }
 .description_product{
   width: 82.5%;
-  height: auto;
+  height: 200px;
+
 }
 .add_product_info_t{
   height: auto;
@@ -18,11 +19,13 @@
   height: 50px;
   border-radius: 4px;
   padding: 10px;
+  font-size: 16px;
 }
 .add_product_info{
   width: 100%;
   height: auto;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 #upfile{
   height: auto;
@@ -182,4 +185,10 @@
   flex-wrap: wrap;
   display: flex;
   
+}
+.table_add{
+  width: 100%;
+  height: auto;
+
+  flex-wrap: wrap;
 }

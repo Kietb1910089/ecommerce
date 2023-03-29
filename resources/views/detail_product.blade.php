@@ -21,163 +21,58 @@
         href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
-    
-    <link rel="stylesheet" href="style.css" >
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/sweetalert.css')}}">
+
     <title>Chi tiết sản phẩm</title>
 </head>
+<style>
+    input[type="radio"] {
+        display: none;
+    }
+    input[type="radio"]:checked + label {
+        color: #FBBC05;
+        color: var(--theme-color, #FBBC05);
+        border-color: #FBBC05;
+        border-color: var(--theme-color, #FBBC05);
+    }
+</style>
 <body>
     
     <header>
-        <div class="detail-top">
-            <div class="nav-bar-top">
-                <div class="nav-bar-top-left colum-5">
-                    <div class="nav-bar-top-left-select colum-2-5">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Kênh Người Bán
-                        </a>
-                    </div>
-                    <div class="nav-bar-top-left-select colum-3">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Chăm sóc khách hàng
-                        </a>
-                    </div>
-                    <div class="nav-bar-top-left-select colum-3">
-                        <a href="#" class="nav-bar-top-left-select-a">
-                            Về Kenji
-                        </a>
-                    </div>
-                </div>
-                <div class="nav-bar-top-right colum-5">
-                    <div class="nav-bar-top-right-connect colum-5">
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="nav-bar-bottom">
-                <div class="nav-bar-bottom-with-search">
-                    <div class="nav-bar-bottom-left">
-                        <a href="#">
-                            <img src="icon.jpg" alt="" class="icon-ecommerce">
-                        </a>
-                    </div>
-                    <div class="nav-bar-bottom-center">
-                        <div class="nav-bar-bottom-center-menu colum-0-5">
-                            <div class="colum-10">
-                                <svg  class="icon-menu" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-menu-button-wide" viewBox="0 0 16 16">
-                                    <path  d="M0 1.5A1.5 1.5 0 0 1 1.5 0h13A1.5 1.5 0 0 1 16 1.5v2A1.5 1.5 0 0 1 14.5 5h-13A1.5 1.5 0 0 1 0 3.5v-2zM1.5 1a.5.5 0 0 0-.5.5v2a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 0-.5-.5h-13z"/>
-                                    <path d="M2 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm10.823.323-.396-.396A.25.25 0 0 1 12.604 2h.792a.25.25 0 0 1 .177.427l-.396.396a.25.25 0 0 1-.354 0zM0 8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V8zm1 3v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2H1zm14-1V8a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v2h14zM2 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="nav-bar-bottom-center-search colum-9-5">
-                            <div class="colum-9">
-                                <input type="text" name="" class="input-search" placeholder=" Tìm kiếm trên Kenji...">
-                            </div>
-                            <div class="colum-1">
-                                <button type="submit" value="Submit" aria-label="button submit" class="button-icon-search">
-                                    <svg width="24" height="24"  viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" class="d7ed-SwZDZ2 d7ed-w34diS"><path d="M10 2a8 8 0 0 1 6.32 12.905l5.387 5.388-1.414 1.414-5.388-5.386A8 8 0 1 1 10 2Zm0 2a6 6 0 1 0 0 12 6 6 0 0 0 0-12Z" fill="#6F787E" fill-rule="nonzero" ></path>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-bar-bottom-right">
-                        <div class="nav-bar-bottom-right-cart colum-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check icon-cart" viewBox="0 0 16 16">
-                                <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
-                                <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
-                              </svg>
-                        </div>
-                        <div class="button-user colum-10">
-                            <button class="button-user-login">
-                                <span id="span-user-login">Đăng nhập</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
+        @include('header')
     </header>
     <main >
         <div class="detail-center">
-            <div class="page-product">   
+            <form method="POST">
+                @csrf
+                <div class="page-product">
                 <div class="page-product-detail">
                     <div class="page-product-detail-left">
                         <swiper-container style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="mySwiper"
                             thumbs-swiper=".mySwiper2" space-between="10" navigation="true">
+                            @foreach($products_images as $key => $image)
                             <swiper-slide>
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" />
+                                <img src="{{asset('storage/'.$image->imageProduct)}}" style="height:525px"/>
                             </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                                <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-                            </swiper-slide>
+                            @endforeach
                         </swiper-container>
 
                         <swiper-container class="mySwiper2" space-between="10" slides-per-view="4" free-mode="true"
                             watch-slides-progress="true">
+                            @foreach($products_images as $key => $image)
                             <swiper-slide>
-                            <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-                            </swiper-slide>
-                            <swiper-slide>
-                            <img src="https://swiperjs.com/demos/images/nature-10.jpg" />
-                            </swiper-slide>
+                                <img src="{{asset('storage/'.$image->imageProduct)}}" style="height:100px"/>
+                            </swiper-slide> 
+                            @endforeach
                         </swiper-container>
-                        
                     </div>
                     <div class="flex flex-auto RBf1cu">
+                    
                         <div class="flex-auto flex-column swTqJe ">
                             <div class="product-detail-title">
                                 <span>
-                                    Áo sơ mi trắng nam siêu mềm mại 
+                                    {{$products->productName}}
                                 </span>
                             </div>
                             <div class="product-detail-proper">
@@ -208,49 +103,55 @@
                             </div>
                             <div class="product-detail-price">
                                 <div id="product-detail-price">
-                                    ₫380.000
+                                    {{$products->price}} VNĐ
+                                
                                 </div>
                             </div>
                             <div class="h-y3ij">
                                 <div class="flex flex-column">
                                     <div class="flex rY0UiC j9be9C">
                                         <div class="flex flex-column">
-                                            <div class="flex items-center" style="margin-bottom: 8px; align-items: baseline;">
-                                                <label class="oN9nMU">màu sắc</label>
-                                                <div class="flex items-center bR6mEk">
-                                                    <button class="product-variation" aria-label="Màu trắng*" aria-disabled="false">Màu trắng*</button>
-                                                    <button class="product-variation" aria-label="Màu đỏ*" aria-disabled="false">Màu đỏ*</button>
-                                                    <button class="product-variation" aria-label="Màu xanh*" aria-disabled="false">Màu xanh*</button>
-                                                    <button class="product-variation" aria-label="áo phông" aria-disabled="false">áo phông</button>
+                                            @if(isset($var_option))
+                                                <div class="flex items-center" style="margin-bottom: 8px; align-items: baseline;">
+                                                    <label class="oN9nMU">
+                                                        @foreach($var_option as $key => $var_option)
+                                                            {{$var_option->variationName}}
+                                                        @endforeach
+                                                    </label>
+                                                    <div class="flex items-center bR6mEk">
+                                                        @if(($combination_string[0]->combination_string)=='')
+                                                            @foreach($combination_string as $key => $combination)
+                                                                <input hidden checked type="radio" data-avai_stock="{{$combination -> avaiable_stock}}"  id="{{$combination->combination_string}}" value="{{$combination->combination_string}}" name="combination" class="choose_variation" >
+                                                            @endforeach
+                                                        @else
+                                                            @foreach($combination_string as $key => $combination)
+                                                                <input type="radio" data-avai_stock="{{$combination -> avaiable_stock}}"  id="{{$combination->combination_string}}" value="{{$combination->combination_string}}" name="combination" class="choose_variation" >
+                                                                <label class="product-variation"  for="{{$combination->combination_string}}"> {{$combination->combination_string}}</label>
+                                                                <input type="hidden" name="avaiable_stock"  value="{{$combination->avaiable_stock}}" class="avaiable_stock_{{$combination -> id}}">
+                                                            @endforeach
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flex items-center" style="margin-bottom: 8px; align-items: baseline;">
-                                                <label class="oN9nMU">size</label>
-                                                <div class="flex items-center bR6mEk">
-                                                    <button class="product-variation" aria-label="Size M*" aria-disabled="false">Size M*</button>
-                                                    <button class="product-variation" aria-label="Size L+" aria-disabled="false">Size L+</button>
-                                                    <button class="product-variation" aria-label="Size Xl*" aria-disabled="false">Size Xl*</button>
-                                                </div>
-                                            </div>
+                                            @endif
                                             <div class="flex items-center _6lioXX">
                                                 <div class="oN9nMU">Số lượng</div>
                                                 <div class="flex items-center">
                                                     <div style="margin-right: 15px;">
                                                         <div class="Z+JGL3 shopee-input-quantity">
-                                                            <button class="EquXA8">
+                                                            <span id="minus" class="EquXA8" >
                                                                 <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="shopee-svg-icon">
                                                                     <polygon points="4.5 4.5 3.5 4.5 0 4.5 0 5.5 3.5 5.5 4.5 5.5 10 5.5 10 4.5"></polygon>
                                                                 </svg>
-                                                            </button>
-                                                            <input class="EquXA8 Wrmraq" type="text" role="spinbutton" aria-valuenow="1" value="1">
-                                                            <button class="EquXA8">
+                                                            </span>
+                                                            <input id="number"  class="EquXA8 Wrmraq quantity{{$products -> id}}" type="text" role="spinbutton" aria-valuenow="1" value="1" required number>
+                                                            <span id="plus" class="EquXA8">
                                                                 <svg enable-background="new 0 0 10 10" viewBox="0 0 10 10" x="0" y="0" class="shopee-svg-icon icon-plus-sign">
                                                                     <polygon points="10 4.5 5.5 4.5 5.5 0 4.5 0 4.5 4.5 0 4.5 0 5.5 4.5 5.5 4.5 10 5.5 10 5.5 5.5 10 5.5"></polygon>
                                                                 </svg>
-                                                            </button>
+                                                            </span>
                                                         </div>
                                                     </div>
-                                                    <div>999 sản phẩm có sẵn</div>
+                                                    <span class="show_avaiable">{{$sum_avaialbe}} sản phẩm có sẵn</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -260,7 +161,7 @@
                             <div style="margin-top: 15px;">
                                 <div class="ThEIyI">
                                     <div class="p+UZsF">
-                                        <button type="button" class="btn btn-tinted btn--l iFo-rx QA-ylc" aria-disabled="false" >
+                                        <button type="button" data-id_product="{{$products->id }}" class="btn btn-tinted btn--l iFo-rx QA-ylc add-to-cart" aria-disabled="false" >
                                             <svg enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0" class="shopee-svg-icon tDviDD icon-add-to-cart">
                                                 <g>
                                                     <g>
@@ -272,17 +173,24 @@
                                                     <line fill="none" stroke-linecap="round" stroke-miterlimit="10" x1="9" x2="9" y1="8.5" y2="5.5"></line>
                                                 </g>
                                             </svg>
+                                            
+                                            <input type="hidden"  value="{{$products->shop_id}}" class="shop_id_{{$products -> id}}">
+                                            <input type="hidden"  value="{{$products->id}}" class="product_id_{{$products -> id}}">
+                                            <input type="hidden"  value="{{$products->productName }}" class="productName{{$products -> id }}">
+                                            <input type="hidden"  value="{{ asset('storage/'.$products -> previewImage)}}" class="previewImage{{$products -> id }}">
+                                            <input type="hidden"  value="{{$products->price}}" class="price{{$products -> id }}">
+                                            
                                             <span>Thêm Vào Giỏ Hàng</span>
                                         </button>
-                                        <button type="button" class="btn btn-solid-primary btn--l iFo-rx" aria-disabled="false">Mua Ngay</button>
+                                        <span type="button" class="btn btn-solid-primary btn--l iFo-rx" aria-disabled="false">Mua Ngay</span>
                                     </div>
                                 </div>
                             </div>
                         </div>  
-                    
                     </div>
                 </div>
             </div>
+            </form>
             <div class=" page-product-shop">
                 <div class="NLeTwo page-product__shop" data-testid="product_shop_pdp">
                     <div class="jwlMoy">
@@ -396,6 +304,7 @@
                     <div style="display: contents;">
                         <div class="product-shop-vouchers page-product__shop-voucher"><div class="product-shop-vouchers__header">Mã giảm giá của Shop</div><div class="product-shop-vouchers__list" tabindex="-1" style="max-height: 23.25rem;"><div class="vc_Card_container vc_product-detail-page-vouchers_pcProductVoucher nBBX45 Y56Uu-"><div class="vc_Card_card"><div class="vc_Card_left"><div class="vc_Card_sawtooth"></div></div><div class="vc_Card_right"></div><div class="vc_VoucherStandardTemplate_hideOverflow"></div><div class="vc_VoucherStandardTemplate_template"><div class="vc_product-detail-page-vouchers_pcProductVoucherMiddle vc_VoucherStandardTemplate_middle"><div class="vc_MainTitle_mainTitle"><div class="vc_MainTitle_text">Giảm ₫3k</div></div><div class="vc_Subtitle_subTitle">Đơn Tối Thiểu ₫150k</div><div class="vc_Label_label"></div><div class="vc_ProgressBarExpiry_progressBarExpiry"><div class="vc_ProgressBarExpiry_usageLimitedText"><span class="vc_ProgressBarExpiry_validUntil vc_ProgressBarExpiry_capitalize">HSD: 17.03.2023</span></div></div></div><div class="vc_product-detail-page-vouchers_pcProductVoucherRight vc_VoucherStandardTemplate_right"><div></div><div class="vc_VoucherStandardTemplate_center"><div class="vc_RectButton_rectButton"><div class="vc_RectButton_btn vc_RectButton_claim">Lưu</div></div></div><div></div></div></div></div></div><div class="vc_Card_container vc_product-detail-page-vouchers_pcProductVoucher nBBX45 Y56Uu-"><div class="vc_Card_card"><div class="vc_Card_left"><div class="vc_Card_sawtooth"></div></div><div class="vc_Card_right"></div><div class="vc_VoucherStandardTemplate_hideOverflow"></div><div class="vc_VoucherStandardTemplate_template"><div class="vc_product-detail-page-vouchers_pcProductVoucherMiddle vc_VoucherStandardTemplate_middle"><div class="vc_MainTitle_mainTitle"><div class="vc_MainTitle_text">Giảm ₫5k</div></div><div class="vc_Subtitle_subTitle">Đơn Tối Thiểu ₫250k</div><div class="vc_Label_label"></div><div class="vc_ProgressBarExpiry_progressBarExpiry"><div class="vc_ProgressBarExpiry_usageLimitedText"><span class="vc_ProgressBarExpiry_validUntil vc_ProgressBarExpiry_capitalize">HSD: 18.03.2023</span></div></div></div><div class="vc_product-detail-page-vouchers_pcProductVoucherRight vc_VoucherStandardTemplate_right"><div></div><div class="vc_VoucherStandardTemplate_center"><div class="vc_RectButton_rectButton"><div class="vc_RectButton_btn vc_RectButton_claim">Lưu</div></div></div><div></div></div></div></div></div></div></div></div></div>
             </div>
+        
         </div>
 
     </main>
@@ -501,9 +410,9 @@
                 </div>
             </section>
        </div>
-
     </footer>
-</body>
+@include('javascript')
+</body> 
 </html>
 
 

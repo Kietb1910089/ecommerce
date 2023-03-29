@@ -48,7 +48,50 @@
                 </div>
                 <div class="nav-bar-top-right colum-5">
                     <div class="nav-bar-top-right-connect colum-5">
-                       
+                        <!-- <div class="nav-bar-top-right-connects colum-3">
+                            <a href="{{route('registers')}}" class="span-user-login">
+                                <span id="span-user-login">Đăng Ký</span>
+                            </a>
+                        </div>
+                     
+                        <div class="nav-bar-top-right-connects colum-3 ">
+                            <a href="{{route('login')}}" class="span-user-login">
+                                <span id="span-user-login" >Đăng Nhập</span>
+                            </a>
+                        </div> -->
+                        <?php
+                        $user = Session::get('user_id');
+                        if ($user == NULL){
+                        ?>
+                            <div class="nav-bar-top-right-connects colum-3">
+                                <a href="{{route('registers')}}" class="span-user-login">
+                                    <span id="span-user-login">Đăng Ký</span>
+                                </a>
+                            </div>
+                            <div class="nav-bar-top-right-connects colum-3 ">
+                                <a href="{{route('login')}}" class="span-user-login">
+                                    <span id="span-user-login" >Đăng Nhập</span>
+                                </a>
+                            </div>
+                        <?php
+                            }
+                            else{
+                        ?>   
+                            <div class="nav-bar-top-right-connects colum-3">
+                                <a href="" class="span-user-login">
+                                    <span id="span-user-login">Chào {{Session::get('user_name')}}</span>
+                                </a>
+                            </div>
+                        
+                            <div class="nav-bar-top-right-connects colum-3 ">
+                                <a href="{{route('logout_user')}}" class="span-user-login">
+                                    <span id="span-user-login" >Đăng Xuất</span>
+                                </a>
+                            </div>
+                           
+                        <?php
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
@@ -56,7 +99,7 @@
                 <div class="nav-bar-bottom-with-search">
                     <div class="nav-bar-bottom-left">
                         <a href="#">
-                            <img src="icon.jpg" alt="" class="icon-ecommerce">
+                            <img src="{{asset('img/icon.jpg')}} " alt="" class="icon-ecommerce">
                         </a>
                     </div>
                     <div class="nav-bar-bottom-center">
@@ -81,18 +124,11 @@
                         </div>
                     </div>
                     <div class="nav-bar-bottom-right">
-                        <div class="nav-bar-bottom-right-cart colum-2-5">
+                        <div class="nav-bar-bottom-right-cart colum-10">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-check icon-cart" viewBox="0 0 16 16">
                                 <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
                                 <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                               </svg>
-                        </div>
-                        <div class="button-user colum-7-5">
-                            <a href="{{route('login')}}">
-                                <button class="button-user-login">
-                                    <span id="span-user-login">Đăng nhập</span>
-                                </button>
-                            </a>
                         </div>
                     </div>
                 </div>
@@ -344,21 +380,22 @@
                 </div>
             </div>
             <div class="body-index">
+                @foreach($products as $product)
                 <div class="body-index-products colum-1-6">
-                    <a href="#">
+                    <a href="{{route('detail_product', $product -> id)}}">
                         <div class="body-index-products-info">
                             <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
+                                <img src="{{asset('storage/'.$product -> previewImage)}}" alt="" class="product-img-index">
                             </div>
                             <div class="body-index-products-detail">
                                 <div class="body-index-products-detail-name">
                                     <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
+                                        {{$product -> productName}}
                                     </div>
                                 </div>
                                 <div class="body-index-products-detail-price">
                                     <div id="body-index-products-detail-price-span">
-                                        100.000đ
+                                        {{number_format($product -> price)}} đ
                                     </div>
                                 </div>
                                 <div class="body-index-products-detail-sold">
@@ -366,201 +403,12 @@
                                         Đã bán 100
                                     </div>
                                 </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="body-index-products colum-1-6">
-                    <a href="#">
-                        <div class="body-index-products-info">
-                            <div class="body-index-products-img ">
-                                <img src="https://hidanz.com/wp-content/uploads/2021/03/ao-so-mi-trang-nam-mac-voi-quan-gi-7.jpg" alt="" class="product-img-index">
-                            </div>
-                            <div class="body-index-products-detail">
-                                <div class="body-index-products-detail-name">
-                                    <div id="body-index-products-detail-name-span">
-                                        Áo sơ mi trắng nam siêu đẹp Nguyễn Văn A anh yeu em nhat ma
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-price">
-                                    <div id="body-index-products-detail-price-span">
-                                        100.000đ
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-sold">
-                                    <div id="body-index-products-detail-sold-span">
-                                        Đã bán 100
-                                    </div>
-                                </div>
-                                <div class="body-index-products-detail-addshop">
-                                    <div id="body-index-products-detail-addshop-span">
-                                        TP.Hồ Chí Minh
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </main>
@@ -602,24 +450,24 @@
                 <div class="d7ed-IB_g3V vaicailz">
                     <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
                         <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">VỀ CHÚNG TÔI</span>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://www.sendo.vn/huong-dan/ve-sendo?ref=footer">Giới thiệu Sendo.vn</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://help.sendo.vn/hc/vi/categories/360000719872?ref=footer">Giới thiệu SenMall</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://www.sendo.vn/quy-che-hoat-dong?ref=footer">Quy chế hoạt động</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://www.sendo.vn/chinh-sach-bao-mat?ref=footer">Chính sách bảo mật</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://ban.sendo.vn/chinh-sach-nguoi-ban/49-5-quy-dinh-van-chuyen/175-phu-luc-09-quy-dinh-lay-hang%2C-giao-hang%2C-tra-hang%2C-thu-hoi-danh-cho-don-vi-van-chuyen">Giao hàng và Nhận hàng</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Giới thiệu Sendo.vn</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Giới thiệu SenMall</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Quy chế hoạt động</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Chính sách bảo mật</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Giao hàng và Nhận hàng</a>
                     </div>
                     <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
                         <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">DÀNH CHO NGƯỜI MUA</span>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://help.sendo.vn/hc/vi/categories/115000167331?ref=footer">Giải quyết khiếu nại</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://help.sendo.vn/hc/vi/articles/115001262292-Hướng-dẫn-mua-hàng?ref=footer">Hướng dẫn mua hàng</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://help.sendo.vn/hc/vi/articles/115001260091?ref=footer">Chính sách đổi trả</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://help.sendo.vn/hc/vi?ref=footer">Chăm sóc khách hàng</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://www.sendo.vn/tien-ich/nap-tien?ref=footer">Nạp tiền điện thoại</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Giải quyết khiếu nại</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Hướng dẫn mua hàng</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Chính sách đổi trả</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Chăm sóc khách hàng</a>
+                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Nạp tiền điện thoại</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
                             <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">DÀNH CHO NGƯỜI BÁN</span>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://ban.sendo.vn/gioi-thieu-trang-ban?ref=footer">Quy định đối với người bán</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://ban.sendo.vn/chinh-sach-nguoi-ban?ref=footer">Chính sách bán hàng</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://ban.sendo.vn/chinh-sach-nguoi-ban/36-5-quy-dinh-kiem-duyet?ref=footer">Hệ thống tiêu chí kiểm duyệt</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="https://ban.sendo.vn/gioi-thieu-trang-ban?ref=footer">Mở shop trên Sendo</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
+                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Quy định đối với người bán</a>
+                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Chính sách bán hàng</a>
+                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Hệ thống tiêu chí kiểm duyệt</a>
+                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="#">Mở shop trên Sendo</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
                                 <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">TẢI ỨNG DỤNG SENDO</span><span class="a258-ynyK1p d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa">Mang thế giới mua sắm của Sendo trong tầm tay bạn</span>
                                 
                             </div>
@@ -634,13 +482,13 @@
                         <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Số ĐKKD:  - Ngày cấp: 13/05/2014, được sửa đổi lần thứ 20, ngày 26/04/2022.</span><span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Cơ quan cấp: Sở Kế hoạch và Đầu tư TPHCM.</span>
                         <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Địa chỉ: Tầng 5, Tòa nhà A, Vườn Ươm Doanh Nghiệp, Lô D.01, Đường Tân Thuận, Khu chế xuất Tân Thuận, Phường Tân Thuận Đông, Quận 7, Thành phố Hồ Chí Minh, Việt Nam.</span>
                         <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Email: 
-                            <a class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj" href="mailto:lienhe@sendo.vn">lienhe@sendo.vn</a>
+                            <a class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj" href="#">lienhe@sendo.vn</a>
                         </span>
                         <div class="a258-FdFl_j">
-                            <a href="http://online.gov.vn/Home/WebDetails/21391">
+                            <a href="#">
                                 <img data-src="https://media3.scdn.vn/img4/2020/12_16/XhpGDnvWqrlKeHLst3aS.png" src="https://media3.scdn.vn/img4/2020/12_16/XhpGDnvWqrlKeHLst3aS.png" alt="Bộ Công Thương" class="a258-qXDOtl lazyloaded">
                             </a>
-                            <a href="https://help.sendo.vn/hc/vi/articles/115001260091-Làm-thế-nào-để-trả-hàng">
+                            <a href="#">
                                 <img data-src="https://media3.scdn.vn/img4/2020/12_16/h6lEMGIAt4Uapd0Mls34.png" src="https://media3.scdn.vn/img4/2020/12_16/h6lEMGIAt4Uapd0Mls34.png" alt="Bộ Công Thương - Nói không với hàng giả" class="a258-qXDOtl ls-is-cached lazyloaded">
                             </a>
                         </div>

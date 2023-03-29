@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products_combinations', function (Blueprint $table) {
+        Schema::create('cart', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->foreignId('product_id')->constrained('products');
-            $table->string('combination_string');
-            $table->float('price')->nullable();
-            $table->integer('avaiable_stock');  
+            $table->string('product_name');
+            $table->string('product_quantity');
+            $table->string('product_price');
+            $table->string('product_combination');
+            $table->string('product_image');
             $table->timestamps();
         });
     }
