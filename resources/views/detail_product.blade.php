@@ -20,10 +20,15 @@
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
     />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"
+    />
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/sweetalert.css')}}">
-
     <title>Chi tiết sản phẩm</title>
 </head>
 <style>
@@ -44,7 +49,7 @@
     </header>
     <main >
         <div class="detail-center">
-            <form method="POST">
+            <form method="POST" id="form-detail">
                 @csrf
                 <div class="page-product">
                 <div class="page-product-detail">
@@ -94,7 +99,7 @@
                                 </div>
                                 <div class="product-detail-number-review">
                                     <div style="font-size: 17px; margin-right: 5px;">
-                                        <u>100 </u>
+                                        <u>{{$product_sale->sales_quantity}} </u>
                                     </div>
                                     <div style="color:darkgrey;  ">
                                         Đã Bán
@@ -125,8 +130,8 @@
                                                             @endforeach
                                                         @else
                                                             @foreach($combination_string as $key => $combination)
-                                                                <input type="radio" data-avai_stock="{{$combination -> avaiable_stock}}"  id="{{$combination->combination_string}}" value="{{$combination->combination_string}}" name="combination" class="choose_variation" >
-                                                                <label class="product-variation"  for="{{$combination->combination_string}}"> {{$combination->combination_string}}</label>
+                                                                <input type="radio" data-avai_stock="{{$combination -> avaiable_stock}}"  id="{{$combination->combination_string}}" value="{{$combination->combination_string}}" name="combination" class="choose_variation" required>
+                                                                <label class="product-variation"  for="{{$combination->combination_string}}" name="combination" required> {{$combination->combination_string}}</label>
                                                                 <input type="hidden" name="avaiable_stock"  value="{{$combination->avaiable_stock}}" class="avaiable_stock_{{$combination -> id}}">
                                                             @endforeach
                                                         @endif
@@ -177,7 +182,7 @@
                                             <input type="hidden"  value="{{$products->shop_id}}" class="shop_id_{{$products -> id}}">
                                             <input type="hidden"  value="{{$products->id}}" class="product_id_{{$products -> id}}">
                                             <input type="hidden"  value="{{$products->productName }}" class="productName{{$products -> id }}">
-                                            <input type="hidden"  value="{{ asset('storage/'.$products -> previewImage)}}" class="previewImage{{$products -> id }}">
+                                            <input type="hidden"  value="{{ $products -> previewImage}}" class="previewImage{{$products -> id }}">
                                             <input type="hidden"  value="{{$products->price}}" class="price{{$products -> id }}">
                                             
                                             <span>Thêm Vào Giỏ Hàng</span>
@@ -194,7 +199,7 @@
             <div class=" page-product-shop">
                 <div class="NLeTwo page-product__shop" data-testid="product_shop_pdp">
                     <div class="jwlMoy">
-                        <a class="W0LQye" href="/ducchimse297?categoryId=100011&amp;entryPoint=ShopByPDP&amp;itemId=18459535951">
+                        <a class="W0LQye" href="{{route('view_shop',$shop->id)}}">
                             <div class="shopee-avatar UadQpu" data-testid="shop_avatar_image_pdp">
                                 <div class="shopee-avatar__placeholder">
                                     <svg enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0" class="shopee-svg-icon icon-headshot">
@@ -204,11 +209,11 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <img class="shopee-avatar__img" src="https://cf.shopee.vn/file/bdfff5ba25c66c995af2b9a57ab9ce4d_tn">
+                                <img class="shopee-avatar__img" src="{{asset('storage/'.$shop -> shopImg)}}">
                             </div>
                         </a>
                         <div class="oAVg4E">
-                            <div class="VlDReK" data-testid="shop_name_pdp">ducchimse297</div>
+                            <div class="VlDReK" data-testid="shop_name_pdp">{{$shop->shopname }}</div>
                             <div class="TaEoi4">
                                 <div class="zSXxlI" data-testid="seller_active_time_pdp">Online 3 giờ trước</div>
                             </div>
@@ -220,7 +225,7 @@
                                         </g>
                                     </svg>Chat ngay
                                 </button>
-                                <a class="btn btn-light btn--s btn--inline btn-light--link Vf+pt4" data-testid="btn_light" href="/ducchimse297?categoryId=100011&amp;entryPoint=ShopByPDP&amp;itemId=18459535951">
+                                <a class="btn btn-light btn--s btn--inline btn-light--link Vf+pt4" data-testid="btn_light" href="{{route('view_shop',$shop->id)}}">
                                     <svg enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0" stroke-width="0" class="shopee-svg-icon _9Sz-n3">
                                         <path d="m13 1.9c-.2-.5-.8-1-1.4-1h-8.4c-.6.1-1.2.5-1.4 1l-1.4 4.3c0 .8.3 1.6.9 2.1v4.8c0 .6.5 1 1.1 1h10.2c.6 0 1.1-.5 1.1-1v-4.6c.6-.4.9-1.2.9-2.3zm-11.4 3.4 1-3c .1-.2.4-.4.6-.4h8.3c.3 0 .5.2.6.4l1 3zm .6 3.5h.4c.7 0 1.4-.3 1.8-.8.4.5.9.8 1.5.8.7 0 1.3-.5 1.5-.8.2.3.8.8 1.5.8.6 0 1.1-.3 1.5-.8.4.5 1.1.8 1.7.8h.4v3.9c0 .1 0 .2-.1.3s-.2.1-.3.1h-9.5c-.1 0-.2 0-.3-.1s-.1-.2-.1-.3zm8.8-1.7h-1v .1s0 .3-.2.6c-.2.1-.5.2-.9.2-.3 0-.6-.1-.8-.3-.2-.3-.2-.6-.2-.6v-.1h-1v .1s0 .3-.2.5c-.2.3-.5.4-.8.4-1 0-1-.8-1-.8h-1c0 .8-.7.8-1.3.8s-1.1-1-1.2-1.7h12.1c0 .2-.1.9-.5 1.4-.2.2-.5.3-.8.3-1.2 0-1.2-.8-1.2-.9z"></path>
                                     </svg>xem shop
@@ -234,9 +239,9 @@
                                 <label class="siK1qW">Đánh giá</label>
                                 <span class="Xkm22X">3,3k</span>
                             </div>
-                            <a class="p48aHT _07yPll" data-testid="shop_products_section_pdp" href="/ducchimse297#product_list">
+                            <a class="p48aHT _07yPll" data-testid="shop_products_section_pdp" href="{{route('view_shop', $shop->id)}}">
                                 <label class="siK1qW">Sản phẩm</label>
-                                <span class="Xkm22X vUG3KX">51</span>
+                                <span class="Xkm22X vUG3KX">{{$product_count}}</span>
                             </a>
                         </div>
                         <div class="Odudp+">
@@ -252,7 +257,7 @@
                         <div class="Odudp+">
                             <div class="R7Q8ES _07yPll" data-testid="shop_joined_section_pdp">
                                 <label class="siK1qW">tham gia</label>
-                                <span class="Xkm22X">6 năm trước</span>
+                                <span class="Xkm22X">{{$created_at}} Ngày</span>
                             </div>
                             <div class="R7Q8ES _07yPll" data-testid="shop_follower_section_pdp">
                                 <label class="siK1qW">Người theo dõi</label>
@@ -271,7 +276,7 @@
                                 <div class="dR8kXc">
                                     <label class="zquA4o">Danh Mục</label>
                                     <div class="flex items-center RnKf-X">
-                                        <a class="akCPfg KvmvO1" href="/">Shopee</a>
+                                        <a class="akCPfg KvmvO1" href="/">Kenji</a>
                                         <svg enable-background="new 0 0 11 11" viewBox="0 0 11 11" x="0" y="0" class="shopee-svg-icon xprSzi icon-arrow-right">
                                             <path d="m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z"></path>
                                         </svg>
@@ -309,109 +314,10 @@
 
     </main>
     <footer>
-       <div class="footer">
-            <section class="d7ed-IB_g3V chanthatsu">   
-                <div class="a258-M5dPaP d7ed-fdSIZS d7ed-OoK3wU d7ed-w9YXDo">
-                    <a class="conmeno a258-DO4HOc d7ed-fdSIZS d7ed-d4keTB d7ed-OoK3wU d7ed-Bwn8O5 d7ed-UkcyG6 d7ed-ZfrH5c d7ed-GgWJaN d7ed-d2C3_E" href="">
-                        <img data-src="https://media3.scdn.vn/img4/2020/12_16/gJwXr6FFZKZCGKWaz4RB.png" src="https://media3.scdn.vn/img4/2020/12_16/gJwXr6FFZKZCGKWaz4RB.png" alt="Siêu nhiều hàng tốt" class="conmeno-img lazyloaded">
-                        <div class="  d7ed-fdSIZS d7ed-Bwn8O5 d7ed-UkcyG6">
-                            <span class="d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">Siêu nhiều hàng tốt</span>
-                            <span class="d7ed-oz4bcc d7ed-bjQW4F d7ed-JAhcuC">Cần gì cũng có 26 ngành hàng &amp; 10 triệu sản phẩm</span>
-                        </div>
-                    </a>
-                    <a class="conmeno a258-DO4HOc d7ed-fdSIZS d7ed-d4keTB d7ed-OoK3wU d7ed-Bwn8O5 d7ed-UkcyG6 d7ed-ZfrH5c d7ed-GgWJaN d7ed-d2C3_E" href="">
-                        <img data-src="https://media3.scdn.vn/img4/2020/12_16/EfZWQVfV6nQzu2vMmnwC.png" src="https://media3.scdn.vn/img4/2020/12_16/EfZWQVfV6nQzu2vMmnwC.png" alt="Siêu yên tâm" class="conmeno-img lazyloaded">
-                        <div class="d7ed-fdSIZS d7ed-Bwn8O5 d7ed-UkcyG6">
-                            <span class="d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">Siêu yên tâm</span>
-                            <span class="d7ed-oz4bcc d7ed-bjQW4F d7ed-JAhcuC">Miễn phí đổi trả 48h</span>
-                        </div>
-                    </a>
-                    <a class="conmeno a258-DO4HOc d7ed-fdSIZS d7ed-d4keTB d7ed-OoK3wU d7ed-Bwn8O5 d7ed-UkcyG6 d7ed-ZfrH5c d7ed-GgWJaN d7ed-d2C3_E" href="">
-                        <img data-src="https://media3.scdn.vn/img4/2020/12_16/j5C6IQz7gIXPgjFJxmRz.png" src="https://media3.scdn.vn/img4/2020/12_16/j5C6IQz7gIXPgjFJxmRz.png" alt="Siêu tiện lợi" class="conmeno-img lazyloaded">
-                        <div class="d7ed-fdSIZS d7ed-Bwn8O5 d7ed-UkcyG6">
-                            <span class="d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">Siêu tiện lợi</span>
-                            <span class="d7ed-oz4bcc d7ed-bjQW4F d7ed-JAhcuC">Mang thế giới mua sắm của Kenji trong tầm tay bạn</span>
-                        </div>
-                    </a>
-                    <a class="conmeno a258-DO4HOc d7ed-fdSIZS d7ed-d4keTB d7ed-OoK3wU d7ed-Bwn8O5 d7ed-UkcyG6 d7ed-ZfrH5c d7ed-GgWJaN d7ed-d2C3_E" href="">
-                            <img data-src="https://media3.scdn.vn/img4/2020/12_16/7AJFQGQ5qvS7gGOz8P7a.png" src="https://media3.scdn.vn/img4/2020/12_16/7AJFQGQ5qvS7gGOz8P7a.png" alt="Siêu tiết kiệm" class="conmeno-img lazyloaded">
-                            <div class="d7ed-fdSIZS d7ed-Bwn8O5 d7ed-UkcyG6">
-                                <span class="d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">Siêu tiết kiệm</span>
-                                <span class="d7ed-oz4bcc d7ed-bjQW4F d7ed-JAhcuC">Giá hợp lý, vừa túi tiền. Luôn có nhiều chương trình khuyến mãi</span>
-                            </div>
-                        </a>
-                </div>
-            </section>
-            <section class="a258-qe99Bj">
-                <div class="d7ed-IB_g3V vaicailz">
-                    <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
-                        <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">VỀ CHÚNG TÔI</span>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Giới thiệu Kenji.vn</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Giới thiệu SenMall</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Quy chế hoạt động</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Chính sách bảo mật</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Giao hàng và Nhận hàng</a>
-                    </div>
-                    <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
-                        <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">DÀNH CHO NGƯỜI MUA</span>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Giải quyết khiếu nại</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Hướng dẫn mua hàng</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Chính sách đổi trả</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Chăm sóc khách hàng</a>
-                        <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Nạp tiền điện thoại</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
-                            <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">DÀNH CHO NGƯỜI BÁN</span>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Quy định đối với người bán</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Chính sách bán hàng</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Hệ thống tiêu chí kiểm duyệt</a>
-                            <a class="a258-ynyK1p a258-lAQS_H d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa" href="">Mở shop trên Kenji</a></div><div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-JyJa1G">
-                                <span class="a258-DKZyJU d7ed-oz4bcc d7ed-AHa8cD d7ed-mzOLVa">TẢI ỨNG DỤNG Kenji</span><span class="a258-ynyK1p d7ed-oz4bcc d7ed-bjQW4F d7ed-mzOLVa">Mang thế giới mua sắm của Kenji trong tầm tay bạn</span>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section class="a258-fvNoTN">
-                <div class="d7ed-IB_g3V">
-                    <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-hNprrG">
-                        <span class="a258-pBVzm0 d7ed-oz4bcc d7ed-AHa8cD d7ed-p5UgTj">Công ty Cổ phần Công nghệ Kenji, thành viên của Tập đoàn CTU</span>
-                        <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Số ĐKKD:  - Ngày cấp: 13/05/2014, được sửa đổi lần thứ 20, ngày 26/04/2022.</span><span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Cơ quan cấp: Sở Kế hoạch và Đầu tư TPHCM.</span>
-                        <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Địa chỉ: Tầng 5, Tòa nhà A, Vườn Ươm Doanh Nghiệp, Lô D.01, Đường Tân Thuận, Khu chế xuất Tân Thuận, Phường Tân Thuận Đông, Quận 7, Thành phố Hồ Chí Minh, Việt Nam.</span>
-                        <span class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj">Email: 
-                            <a class="a258-sxi_fZ d7ed-oz4bcc d7ed-bjQW4F d7ed-p5UgTj" href="">lienhe@kenji.vn</a>
-                        </span>
-                        <div class="a258-FdFl_j">
-                            <a href="">
-                                <img data-src="https://media3.scdn.vn/img4/2020/12_16/XhpGDnvWqrlKeHLst3aS.png" src="https://media3.scdn.vn/img4/2020/12_16/XhpGDnvWqrlKeHLst3aS.png" alt="Bộ Công Thương" class="a258-qXDOtl lazyloaded">
-                            </a>
-                            <a href="">
-                                <img data-src="https://media3.scdn.vn/img4/2020/12_16/h6lEMGIAt4Uapd0Mls34.png" src="https://media3.scdn.vn/img4/2020/12_16/h6lEMGIAt4Uapd0Mls34.png" alt="Bộ Công Thương - Nói không với hàng giả" class="a258-qXDOtl ls-is-cached lazyloaded">
-                            </a>
-                        </div>
-                    </div>
-                    <div class="d7ed-fdSIZS d7ed-OoK3wU d7ed-Bwn8O5 d7ed-ZfrH5c">
-                        <span class="a258-gVUP7W d7ed-oz4bcc d7ed-AHa8cD d7ed-p5UgTj">Đăng ký nhận bản tin ưu đãi khủng từ Kenji</span>
-                        <form class="a258-SlW74A d7ed-fdSIZS d7ed-UkcyG6">
-                            <label class="a258-tdXkrc" for="subscription-email">Email</label>
-                            <div class="d7ed-OoK3wU d7ed-ZfrH5c">
-                                <div class="d7ed-trb8Db d7ed-w9iqdd" role="presentation">
-                                    <div class="d7ed-tV3JH6">
-                                        <input id="subscription-email" placeholder="Email của bạn là" type="text" inputmode="email" class="d7ed-T0Aa7w d7ed-IMD1Rj" value="">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d7ed-OoK3wU d7ed-qeWlce">
-                                <button type="submit" value="Submit" class="d7ed-s0YDb1 d7ed-jQXTxb d7ed-N12D1Z d7ed-hulWpQ a258-d4RAL9 d7ed-bTLFAv">
-                                    <span class="d7ed-dZeDhd">Đăng ký</span>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </section>
-       </div>
+        @include('footer')
     </footer>
-@include('javascript')
+
+@include('detail_js')
 </body> 
 </html>
 

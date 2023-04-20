@@ -192,3 +192,21 @@
 
   flex-wrap: wrap;
 }
+.table-left-product-tools{
+  text-decoration: none;
+  color: #333;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  cursor: pointer;
+}
+a:hover{
+  text-decoration: none;
+  color: #333;
+
+}
+.number_cart input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

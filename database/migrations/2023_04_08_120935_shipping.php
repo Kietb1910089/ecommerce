@@ -15,12 +15,15 @@ return new class extends Migration
     {
         Schema::create('shipping', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('order_id')->constrained('orders');
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('shop_id')->constrained('shop');
             $table->string('ship_name');
             $table->integer('ship_phonenumber');
             $table->string('ship_address');
+            $table->string('ship_email')->nullable();
             $table->integer('ship_status');
+            $table->string('note')->nullable();
+            $table->string('total_price');
             $table->timestamps();
         });
     }

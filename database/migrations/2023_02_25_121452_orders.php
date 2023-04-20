@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('shop_id')->constrained('shop');
+            $table->foreignId('shipping_id')->constrained('shipping');
             $table->foreignId('payment_id')->constrained('payment');
             $table->string('oder_total');
             $table->integer('order_status');

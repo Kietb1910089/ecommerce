@@ -88,7 +88,7 @@
                                         <div class="add_product_info_t">
                                             <p class="text-gray-900 p-3 m-0" >Tên sản phẩm</p>
                                         </div>
-                                        <input  type="text" name="product_name" id="product_name" class="product_name" placeholder="Nhập tên sản phẩm" required>
+                                        <input  type="text" name="product_name" id="product_name" class="product_name number_cart" placeholder="Nhập tên sản phẩm" required>
                                     </div>
                                     <div class="add_product_info" style="display: flex;">
                                         <div class="add_product_info_t">
@@ -121,7 +121,8 @@
                                             <p class="text-gray-900 p-3 m-0" >Mô tả sản phẩm</p>
                                         </div>
                                         <textarea  id="description" class="description_product" name="description" type="textarea" resize="none" autosize="true"  style="resize: none; min-height: 209.6px; height: 209.6px;" >
-                                        </textarea>                             
+                                        </textarea>   
+                                    </div>                          
                                 </div>
                             </div>
 

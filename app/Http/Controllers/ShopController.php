@@ -19,7 +19,23 @@ session_start();
 class ShopController extends Controller
 {
     public function index_shop(){
-        return view('shop.index');
+        $shop_id = Session::get('shop_id');
+        $total_order = DB::table('orders')->where('shop_id',$shop_id)->count();        
+        // dd($total_order);
+        $total_sale = DB::table('orders')
+            ->where('shop_id',$shop_id)
+            ->where("order_status",'1')
+            ->sum('order_total');
+        $pending_order = DB::table('orders')
+            ->where('shop_id',$shop_id)
+            ->where("order_status",'0')
+            ->count();
+        $accept_order = DB::table('orders')
+            ->where('shop_id',$shop_id)
+            ->where("order_status",'1')
+            ->count();
+        return view('shop.index',compact('total_order','total_sale','pending_order','accept_order'));
+        
     }
     public function add_product(){
         $category= DB::table('categories')->orderby('id','desc')->get();
@@ -340,8 +356,197 @@ class ShopController extends Controller
         Session::forget('variations_option1');
         Session::forget('variations_option2');
         Session::forget('variations_option3');
-
         return redirect()->route('add_product')->with('success','Thêm sản phẩm thành công');
+    }
+    public function manage_product (){
+        $shop_id = Session::get('shop_id');
+        $product_shop = DB::table('products') 
+            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+            ->where('products.shop_id', $shop_id)
+            ->select('products.id','products.status', 'products.productName', 'products.price',  'products.subCategoryName', 'products.previewImage' ,DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage','products.status', 'products.subCategoryName')
+            ->orderBy('products.id', 'asc')
+            ->get();
+        $product_stock= DB::table('products_combinations')
+            ->join('products', 'products.id', '=', 'products_combinations.product_id')
+            ->where('products.shop_id', $shop_id)
+            ->select('products_combinations.product_id', DB::raw('SUM(products_combinations.avaiable_stock) as total_stock'))
+            ->groupBy('products_combinations.product_id')
+            ->get();
+        // $sales_quantity = DB::table('products')
+        //     ->rightjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+        //     ->leftjoin('orders', 'orders.id', '=', 'order_detail.order_id')
+        //     ->where('products.shop_id', $shop_id)
+        //     ->where('orders.order_status', 1)
+        //     ->select('order_detail.product_id', DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+        //     ->groupBy('order_detail.product_id')
+        //     ->get();
+        // dd($sales_quantity);
+        return view('shop.manage_product',compact('product_shop','product_stock'));
+       
+    }
+    public function stop_product_ajax(Request $request){
+        $data=$request->all();
+        $session_id=substr(md5(microtime()),rand(0,26),5);
+        $shop_id = Session::get('shop_id');
+        $cart = DB::table('products')
+            ->where('shop_id', $shop_id)
+            ->where('id', $data['id'])
+            ->update(['status' => 0]);
+      
+        return response()->json([
+            'status' => true
+        ]);
+    }
+    public function start_product_ajax(Request $request){
+        $data=$request->all();
+        $session_id=substr(md5(microtime()),rand(0,26),5);
+        $shop_id = Session::get('shop_id');
+        $cart = DB::table('products')
+            ->where('shop_id', $shop_id)
+            ->where('id', $data['id'])
+            ->update(['status' => 1]);
+      
+        return response()->json([
+            'status' => true
+        ]);
+    }
+    public function edit_product($product_id){
+        $shop_id = Session::get('shop_id');
+        $product = DB::table('products')
+            ->where('shop_id', $shop_id)
+            ->where('id', $product_id)
+            ->first();
+        $combination_string = DB::table('products_combinations')
+            ->where('product_id', $product_id)
+            ->select('combination_string','avaiable_stock','id','product_id')
+            ->get();
+        $category = DB::table('categories')
+            ->get();
+        $subcategory = DB::table('subcategories')
+            ->get();
+        // dd($product);
+        Session::put('combination_string', $combination_string->pluck('combination_string'));
+        return view('shop.edit_product',compact('product','combination_string','category','subcategory'));
+    }
+    public function update_product(Request $request){
+        $shop_id = Session::get('shop_id');
+        $product_id = $request->product_id;
+        $category_id = $request->category;
+        $subcategory_id = $request->subcategory;
+        $category = DB::table('categories')->where('id',$category_id)->first();
+        $subcategory = DB::table('subcategories')->where('id',$subcategory_id)->first();
+        $product= array(
+            'productName' => $request->product_name,
+            'price' => $request->product_price,
+            'description' => $request->description,
+            'category_id' => $category_id,
+            'subcategory_id' => $subcategory_id,
+            'categoryName' => $category->categoryName,
+            'subCategoryName' => $subcategory->subCategoryName,
+            'shop_id' => $shop_id,
+        );
+        DB::table('products')->where('id',$product_id)->update($product);
+        
+        $combination_string = Session::get('combination_string');
+        $avaiable_stock=$request->avaiable_stock;
+        foreach($avaiable_stock as $key => $value){
+            $avaiable_stocks[]= $value;
+        }
+        foreach($combination_string as $key => $value){
+            DB::table('products_combinations')
+            ->where('combination_string',$value)
+            ->update(['avaiable_stock' => $avaiable_stocks[$key]]);
+        }
+        return redirect()->route('manage_product')->with('success','Cập nhật sản phẩm thành công');
+    }
+    public function manage_order(){
+        $shop_id = Session::get('shop_id');
+        $order = DB::table('orders')
+            ->join('users', 'users.id', '=', 'orders.user_id')
+            ->join('payment', 'payment.id', '=', 'orders.payment_id')
+            ->where('orders.shop_id', $shop_id)
+            ->where('orders.order_status', '!=', '2')
+            ->select('orders.id','orders.updated_at','orders.order_status','orders.order_total','users.firstname','users.lastname','payment.payment_method','payment.payment_status')
+            ->get();
+        // dd($order);
+        return view('shop.manage_order',compact('order'));
+    }
+    public function accept_order(Request $request){
+        $order_id = $request->order_id;
+        
+        $product_order = DB::table('order_detail')
+            ->join('products_combinations', 'products_combinations.combination_string', '=', 'order_detail.product_combination')
+            ->join('products', 'order_detail.product_id', '=', 'products.id')
+            ->where('order_id', $order_id)
+            ->select('order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products_combinations.avaiable_stock')
+            ->groupBy('order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products_combinations.avaiable_stock')
+            ->orderBy('order_detail.product_id', 'asc')
+            ->get();
+        foreach ($product_order as $key => $value) {
+            if ($value->avaiable_stock < $value->product_quantity) {
+                $product = DB::table('products')
+                    ->where('id', $value->product_id)
+                    ->first();
+                return response()->json([
+                    'product' => $product->productName,
+                    'status' => false
+                ]);
+            }
+        }
+        foreach ($product_order as $key => $value) {
+            DB::table('products_combinations')
+                ->join('products', 'products.id', '=', 'products_combinations.product_id')
+                ->join('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products_combinations.product_id',$value->product_id)
+                ->where('combination_string',$value->product_combination)
+                ->update(['avaiable_stock' => DB::raw('avaiable_stock - '.$value->product_quantity)]);
+        }
+        $order = DB::table('orders')
+            ->where('id', $order_id)
+            ->update(['order_status' => 1]);
+        return response()->json([
+            
+            'status' => true
+        ]);
+    }
+    public function cancel_order(Request $request){
+        $order_id = $request->order_id;
+        $order = DB::table('orders')
+            ->where('id', $order_id)
+            ->update(['order_status' => 2]);
+        return response()->json([
+            'status' => true
+        ]);
+    }
+    public function view_order_detail($order_id){
+       
+        $order_detail = DB::table('order_detail')
+            ->join('products', 'products.id', '=', 'order_detail.product_id')
+            ->join('products_combinations', 'products_combinations.combination_string', '=', 'order_detail.product_combination')
+            ->where('order_id', $order_id)
+            ->select('products.price', 'previewImage', 'order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products.productName','products_combinations.avaiable_stock')
+            ->groupBy('products.price', 'previewImage','order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products.productName','products_combinations.avaiable_stock')
+            ->get();
+        $ship_info = DB::table('orders')
+            ->join('shipping', 'shipping.id', '=', 'orders.shipping_id')
+            ->where('orders.id', $order_id)
+            ->select('ship_name','ship_email','ship_address','ship_phonenumber','note')
+            ->first();
+        // dd($ship_info);
+        return view('shop.view_order_detail',compact('order_detail','ship_info'));
+    }
+    public function manage_order_cancel(){
+        $shop_id = Session::get('shop_id');
+        $order = DB::table('orders')
+            ->join('users', 'users.id', '=', 'orders.user_id')
+            ->join('payment', 'payment.id', '=', 'orders.payment_id')
+            ->where('orders.shop_id', $shop_id)
+            ->where('orders.order_status', '=', '2')
+            ->select('orders.id','orders.updated_at','orders.order_status','orders.order_total','users.firstname','users.lastname','payment.payment_method','payment.payment_status')
+            ->get();
+        // dd($order);
+        return view('shop.manage_order_cancel',compact('order'));
     }
 }
  

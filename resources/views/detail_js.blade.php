@@ -1,24 +1,31 @@
 <!-- include jQuery library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- include jQuery validate library -->
+
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<!-- include Ajax  library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- include jQuery validate library -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+
+
 <script>
-    const plus = document.querySelector('#plus');
-    const minus = document.querySelector('#minus');
-    const number = document.querySelector('#number');
-    var a = 1;
-    plus.addEventListener('click', () => {
-        a++;
-        number.value = a;
-    });
-    minus.addEventListener('click', () => {
-        if(a > 1){
-            a--;
-            number.value = a;
-        }
-    });
+$("#form-detail").validate({
+    rules: {
+        "combination": {
+            required: true,
+	    },
+    },
+    messages:{
+        "combination": {
+            required: "Bạn phải chọn phân loại trước khi thêm vào giỏ hàng",
+        },
+    },
+    submitHandler: function(form) {
+        $(form).submit();
+    }
+
+});
 </script>
 
 <script>
@@ -55,6 +62,8 @@
                     combination: combination,
                     avaiable_stock:avaiable_stock,
                     _token: _token,
+                },error(data) {
+                  
                 },
                 success: function(data){
                     
@@ -76,7 +85,7 @@
                             } 
                             
                         });
-                        $('#count').html($count_cart);
+                        // $('#count').html($count_cart);
                     }
                     else{
                         swal("Thất bại!", $message, "error");
@@ -99,5 +108,22 @@
                 }
             });
         });
+    });
+</script>
+
+<script>
+    const plus = document.querySelector('#plus');
+    const minus = document.querySelector('#minus');
+    const number = document.querySelector('#number');
+    var a = 1;
+    plus.addEventListener('click', () => {
+        a++;
+        number.value = a;
+    });
+    minus.addEventListener('click', () => {
+        if(a > 1){
+            a--;
+            number.value = a;
+        }
     });
 </script>

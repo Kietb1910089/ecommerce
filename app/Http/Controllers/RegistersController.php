@@ -52,6 +52,8 @@ class RegistersController extends Controller
             Session:: put('user_id',$result->id);
             Session:: put('user_name',$result->lastname);
             Session:: put('user_email',$result->email);
+            $count_cart = DB::table('cart')->where('user_id',$result->id)->count();
+            Session::put('count_cart',$count_cart);
             if($product_id){
                 return redirect()->route('detail_product',$product_id);
             }else{
@@ -65,7 +67,8 @@ class RegistersController extends Controller
         Session::forget('user_id');
         Session::forget('user_name');
         Session::forget('user_email');
-        // Session::forget('cart');
+        Session::forget('count_cart');
+       
         $product_id = Session::get('product_id');
         if($product_id){
             return redirect()->route('detail_product',$product_id);

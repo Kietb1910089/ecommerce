@@ -54,9 +54,17 @@ class RegistersShopController extends Controller
             Session:: put('shop_id',$result->id);
             Session:: put('shop_name',$result->shopname);
             Session:: put('shop_email',$result->email);
+            Session:: put('shopImg',$result->shopImg);
             return redirect()->route('index_shop');
         }else{
             return redirect()->route('register_shop')->with('error','Đăng nhập thất bại');
         }
+    }
+    public function logout_shop(){
+        Session::put('shop_id',null);
+        Session::put('shop_name',null);
+        Session::put('shop_email',null);
+        Session::put('shopImg',null);
+        return redirect()->route('login_shop');
     }
 }
