@@ -31,7 +31,7 @@
             <div class="nav-bar-top">
                 <div class="nav-bar-top-left colum-5">
                     <div class="nav-bar-top-left-select colum-2-5">
-                        <a href="{{route('register_shop') }}" class="nav-bar-top-left-select-a">
+                        <a href="{{route('index_shop') }}" class="nav-bar-top-left-select-a">
                             Kênh Người Bán
                         </a>
                     </div>
@@ -67,18 +67,23 @@
                             }
                             else{
                         ?>   
-                            <div class="nav-bar-top-right-connects colum-3">
-                                <a href="" class="span-user-login">
-                                    <span id="span-user-login">Chào {{Session::get('user_name')}}</span>
-                                </a>
+                            <div class="nav-bar-top-right-connects colum-10">
+                                <div class="btn-group" style="" >
+                                    <div class="menu-bar"style="height:100%; "  id="dropdownMenuButton" data-bs-toggle="dropdown" >
+                                        <div class="shopee-avatar_header">
+                                            <img class="shopee-avatar__img_header" src="{{asset('storage/users_img/user.png')}}">
+                                        </div>
+                                        <a href="#" class="span-user-login">
+                                            <span id="span-user-login"> {{Session::get('user_name')}}</span>
+                                        </a>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#">Hồ Sơ</a></li>
+                                        <li><a class="dropdown-item" href="{{route('user_purchase')}}">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" href="{{route('logout_user')}}">Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                        
-                            <div class="nav-bar-top-right-connects colum-3 ">
-                                <a href="{{route('logout_user')}}" class="span-user-login">
-                                    <span id="span-user-login" >Đăng Xuất</span>
-                                </a>
-                            </div>
-                           
                         <?php
                             }
                         ?>
@@ -92,7 +97,7 @@
                             <img src="{{asset('img/icon.jpg')}} " alt="" class="icon-ecommerce">
                         </a>
                     </div>
-                    <form class="form-search" method="GET" action="{{route('search')}}">
+                    <form class="form-search" method="GET" action="{{route('search_products')}}">
                        
                     <div class="nav-bar-bottom-center">
                         <div class="nav-bar-bottom-center-menu colum-0-5">
@@ -177,17 +182,19 @@
                         </div>
                     </div>
                     <div class="body-index-menu-center">
-                        <a href="" class="body-index-menu-link ">
+                        @foreach($category as $cate)
+                        <a href="{{route('category_products', $cate -> categoryName)}}" class="body-index-menu-link ">
                             <div class="body-index-menu-product">
                                 <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/687f3967b7c2fe6a134a2c11894eea4b_tn" alt="" height="83px" width="88px">
+                                    <img src="{{asset('storage/'.$cate->categoryIcon)}}" alt="" height="83px" width="88px">
                                 </div>
                                 <div class="body-index-menu-product-category">
-                                    Thời Trang Nam
+                                    {{$cate->categoryName}}
                                 </div>
                             </div>
                         </a>
-                        <a href="" class="body-index-menu-link">
+                        @endforeach
+                        <!-- <a href="" class="body-index-menu-link">
                             <div class="body-index-menu-product">
                                 <div class="body-index-menu-product-img">
                                     <img src="https://cf.shopee.vn/file/31234a27876fb89cd522d7e3db1ba5ca_tn" alt="" height="83px" width="88px">
@@ -196,189 +203,9 @@
                                     Điện thoại & Phụ Kiện
                                 </div>
                             </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/978b9e4cb61c611aaaf58664fae133c5_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Thiết Bị Điện Tử
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/c3f3edfaa9f6dafc4825b77d8449999d_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Máy Tính & Laptop
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/ec14dd4fc238e676e43be2a911414d4d_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Máy Ảnh & Máy Quay Phim
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/86c294aae72ca1db5f541790f7796260_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Đồng Hồ
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/74ca517e1fa74dc4d974e5d03c3139de_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Giày Dép Nam
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/7abfbfee3c4844652b4a8245e473d857_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Thiết Bị Gia Dụng
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/6cb7e633f8b63757463b676bd19a50e4_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Thể Thao & Du Lịch
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/18fd9d878ad946db2f1bf4e33760c86f_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Balo & Túi Ví Nam
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/75ea42f9eca124e9cb3cde744c060e4d_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Thời Trang Nữ
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/ce8f8abc726cafff671d0e5311caa684_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Đồ Chơi
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/24b194a695ea59d384768b7b471d563f_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Nhà Cửa & Đời Sống
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/49119e891a44fa135f5f6f5fd4cfc747_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Sức Khỏe
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/ef1f336ecc6f97b790d5aae9916dcb72_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Sắc Đẹp
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/48630b7c76a7b62bc070c9e227097847_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Giày Dép Nữ
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/fa6ada2555e8e51f369718bbc92ccc52_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Túi Ví Nữ
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/36013311815c55d303b0e6c62d6a8139_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Nhà Sách Online
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/4540f87aa3cbe99db739f9e8dd2cdaf0_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Thời Trang Trẻ
-                                </div>
-                            </div>
-                        </a>
-                        <a href="" class="body-index-menu-link">
-                            <div class="body-index-menu-product">
-                                <div class="body-index-menu-product-img">
-                                    <img src="https://cf.shopee.vn/file/8e71245b9659ea72c1b4e737be5cf42e_tn" alt="" height="83px" width="88px">
-                                </div>
-                                <div class="body-index-menu-product-category">
-                                    Phụ Kiện & Trang Sức Nữ
-                                </div>
-                            </div>
-                        </a>
+                        </a> -->
+                        
                     </div>
-                    
                 </div>
             </div>
             <div class="body-index">
@@ -414,6 +241,7 @@
                         </div>
                     </a>
                 </div>
+                            
                 @endforeach
             </div>
         </div>

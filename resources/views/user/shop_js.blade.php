@@ -14,7 +14,7 @@
             var subcategory_id = $(this).attr('data-subcategory-id');
             // var shop_id = $(this).attr('data-shop-id');
             var shop_id = $('#shop_id').val(); 
-            console.log(subcategory_id);
+            // console.log(subcategory_id);
             $.ajax({
                 url: '{{route('choose_subcategory')}}',
                 method: 'GET',
@@ -39,104 +39,209 @@
 <script>
     $(document).ready(function(){
         $('.choose_arrange').on('click',function(){
-            // var shop_id = $(this).attr('data-shop-id');
             var shop_id = $('#shop_id').val(); 
             var arrange = $(this).data('choose_id');
-            console.log(arrange);
-            if (arrange == "popular") {
-                $.ajax({
-                    url: '{{route('choose_popular')}}',
-                    method: 'GET',
-                    data:{
-                        arrange: arrange,
-                        shop_id: shop_id,
-                    },
-                    success: function(data){
-                        var $html = data.html;
-                        $('.shop-search-result-view').html($html);
-                        
-                    },
-                    error: function(data){
-                        var errors = data.responseJSON;
-                        console.log(errors);
-                    }
-            });
-            }
-            if (arrange == "newest") {
-                $.ajax({
-                    url: '{{route('choose_newest')}}',
-                    method: 'GET',
-                    data:{
-                        arrange: arrange,
-                        shop_id: shop_id,
-                    },
-                    success: function(data){
-                        var $html = data.html;
-                        $('.shop-search-result-view').html($html);
-                        
-                    },
-                    error: function(data){
-                        var errors = data.responseJSON;
-                        console.log(errors);
-                    }
-                });
-            }
-            if (arrange == "best_sell") {
-                $.ajax({
-                    url: '{{route('choose_best_sell')}}',
-                    method: 'GET',
-                    data:{
-                        arrange: arrange,
-                        shop_id: shop_id,
-                    },
-                    success: function(data){
-                        var $html = data.html;
-                        $('.shop-search-result-view').html($html);
-                        
-                    },
-                    error: function(data){
-                        var errors = data.responseJSON;
-                        console.log(errors);
-                    }
-                });
-            }
-            if (arrange == "high_low") {
-                $.ajax({
-                    url: '{{route('choose_high_low')}}',
-                    method: 'GET',
-                    data:{
-                        arrange: arrange,
-                        shop_id: shop_id,
-                    },
-                    success: function(data){
-                        var $html = data.html;
-                        $('.shop-search-result-view').html($html);
-                        
-                    },
-                    error: function(data){
-                        var errors = data.responseJSON;
-                        console.log(errors);
-                    }
-                });
-            }
-            if (arrange == "low_high") {
-                $.ajax({
-                    url: '{{route('choose_low_high')}}',
-                    method: 'GET',
-                    data:{
-                        arrange: arrange,
-                        shop_id: shop_id,
-                    },
-                    success: function(data){
-                        var $html = data.html;
-                        $('.shop-search-result-view').html($html);
-                        
-                    },
-                    error: function(data){
-                        var errors = data.responseJSON;
-                        console.log(errors);
-                    }
-                });
+            var subcategory_id = $('#subcategory_id').val(); 
+            
+            if (subcategory_id == null) {
+                if (arrange == "popular") {
+                    $.ajax({
+                        url: '{{route('choose_popular')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "newest") {  
+                    $.ajax({
+                        url: '{{route('choose_newest')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "best_sell") {
+                    $.ajax({
+                        url: '{{route('choose_best_sell')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "high_low") {
+                    $.ajax({
+                        url: '{{route('choose_high_low')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "low_high") {
+                    $.ajax({
+                        url: '{{route('choose_low_high')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+            }else{
+                console.log(subcategory_id);
+                if (arrange == "popular") {
+                    $.ajax({
+                        url: '{{route('choose_popular')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                            subcategory_id: subcategory_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                
+                }
+                if (arrange == "newest") {
+                    $.ajax({
+                        url: '{{route('choose_newest')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                            subcategory_id: subcategory_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "best_sell") {
+                    $.ajax({
+                        url: '{{route('choose_best_sell')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                            subcategory_id: subcategory_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "high_low") {
+                    $.ajax({
+                        url: '{{route('choose_high_low')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                            subcategory_id: subcategory_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
+                if (arrange == "low_high") {
+                    $.ajax({
+                        url: '{{route('choose_low_high')}}',
+                        method: 'GET',
+                        data:{
+                            arrange: arrange,
+                            shop_id: shop_id,
+                            subcategory_id: subcategory_id,
+                        },
+                        success: function(data){
+                            var $html = data.html;
+                            $('.shop-search-result-view').html($html);
+                            
+                        },
+                        error: function(data){
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                }
             }
         });
     })

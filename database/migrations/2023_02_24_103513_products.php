@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('categoryName');
             $table->string('subCategoryName');
-            $table->string('previewImage');
+            $table->string('previewImage')->nullable();
             $table->integer('status')->default(1);
             $table->timestamps();
         });

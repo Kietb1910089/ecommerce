@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Broadcast;
+use App\Http\Middleware\CheckingShopLogin;
+use App\Http\Middleware\CheckingUserLogin;
+use App\Models\Shop;
+use App\Models\Users;
+use App\Models\Messages;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +21,15 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('sendMessageToUser.{user_id}', function (Users $user, $user_id) {
+    return $user->id === $user_id;
+});
+
+Broadcast::channel('sendMessageToShop.{shop_id}', function (Shop $shop, $shop_id) {
+    return $shop->id === $shop_id;
+});
+// Broadcast::channel('sendMessageToUser.{user_id}', function ($user_id) {
+//     return true;
+//     echo'ok';
+// });

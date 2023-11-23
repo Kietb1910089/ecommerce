@@ -2,7 +2,7 @@
             <div class="nav-bar-top">
                 <div class="nav-bar-top-left colum-5">
                     <div class="nav-bar-top-left-select colum-2-5">
-                        <a href="{{route('register_shop')}}" class="nav-bar-top-left-select-a">
+                        <a href="{{route('index_shop')}}" class="nav-bar-top-left-select-a">
                             Kênh Người Bán
                         </a>
                     </div>
@@ -37,15 +37,22 @@
                             }
                             else{
                         ?>   
-                            <div class="nav-bar-top-right-connects colum-3">
-                                <a href="" class="span-user-login">
-                                    <span id="span-user-login">Chào {{Session::get('user_name')}}</span>
-                                </a>
-                            </div>
-                            <div class="nav-bar-top-right-connects colum-3 ">
-                                <a href="{{route('logout_user')}}" class="span-user-login">
-                                    <span id="span-user-login" >Đăng Xuất</span>
-                                </a>
+                            <div class="nav-bar-top-right-connects colum-10">
+                                <div class="btn-group" style="" >
+                                    <div class="menu-bar"style="height:100%; "  id="dropdownMenuButton" data-bs-toggle="dropdown" >
+                                        <div class="shopee-avatar_header">
+                                            <img class="shopee-avatar__img_header" src="{{asset('storage/users_img/user.png')}}">
+                                        </div>
+                                        <a href="#" class="span-user-login">
+                                            <span id="span-user-login"> {{Session::get('user_name')}}</span>
+                                        </a>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <li><a class="dropdown-item" href="#">Hồ Sơ</a></li>
+                                        <li><a class="dropdown-item" href="{{route('user_purchase')}}">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" href="{{route('logout_user')}}">Đăng Xuất</a></li>
+                                    </ul>
+                                </div>
                             </div>
                            
                         <?php
@@ -61,7 +68,7 @@
                             <img src="{{asset('img/icon.jpg')}}" alt="" class="icon-ecommerce">
                         </a>
                     </div>
-                    <form class="form-search" method="GET" action="{{route('search')}}">
+                    <form class="form-search" method="GET" action="{{route('search_products')}}">
                        
                     <div class="nav-bar-bottom-center">
                         <div class="nav-bar-bottom-center-menu colum-0-5">
@@ -74,7 +81,12 @@
                         </div>
                         <div class="nav-bar-bottom-center-search colum-9-5">
                             <div class="colum-9">
+                                @if(isset($keyword))
+                                <input type="text" name="keyword" class="input-search" placeholder=" Tìm kiếm trên Kenji..." value="{{$keyword}}">
+                                @else
                                 <input type="text" name="keyword" class="input-search" placeholder=" Tìm kiếm trên Kenji...">
+
+                                @endif
                             </div>
                             <div class="colum-1">
                                 <button type="submit" value="Submit" aria-label="button submit" class="button-icon-search">
@@ -92,7 +104,6 @@
                                     <path d="M11.354 6.354a.5.5 0 0 0-.708-.708L8 8.293 6.854 7.146a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
                                     <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                                 </svg>
-                                
                                 @php
                                     $user_id= Session::get('user_id');
                                     $count_cart=Session::get('count_cart');

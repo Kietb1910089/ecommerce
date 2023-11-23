@@ -14,6 +14,5 @@ class SubCategories extends Model
     public $fillable = [
         'category_id',
         'subCategoryName',
-        
     ];
 }

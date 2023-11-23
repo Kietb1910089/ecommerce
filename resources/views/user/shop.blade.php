@@ -24,7 +24,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/sweetalert.css')}}">
-    <title>Trang Shop</title>
+    <title>{{$shop_info->shopname}} Cửa hàng trực tuyến</title>
     
 </head>
 <style>
@@ -73,7 +73,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="section-seller-overview-horizontal__buttons">
+                                <div class="section-seller-overview-horizontal__ s">
                                     <a class="section-seller-overview-horizontal__button">
                                         <button class="shopee-button-outline shopee-button-outline--complement shopee-button-outline--fill">
                                             <span class="section-seller-overview-horizontal__icon">
@@ -214,8 +214,8 @@
                                     @foreach($shop_category as $category)
                                     <div class="filter_item">    
                                         <label class="filter_item-checkbox-name">
-                                            <input class="choose_subcategory" id="{{$category->subCategoryName}}"  type="radio" name="subCategory"data-shop-id="{{$shop_info->id }}" data-subcategory-id="{{$category->subcategory_id }}">
-                                            <label class="shop_subcategory"  for="{{$category->subCategoryName}}"> {{$category->subCategoryName}}</label> 
+                                            <input class="choose_subcategory" id="{{$category->subcategory_id}}"  type="radio" name="subCategory"data-shop-id="{{$shop_info->id }}" data-subcategory-id="{{$category->subcategory_id }}">
+                                            <label class="shop_subcategory"  for="{{$category->subcategory_id}}"> {{$category->subCategoryName}}</label> 
                                         </label>
                                     </div>
                                     @endforeach

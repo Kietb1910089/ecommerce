@@ -468,6 +468,7 @@ class ShopController extends Controller
             ->where('orders.shop_id', $shop_id)
             ->where('orders.order_status', '!=', '2')
             ->select('orders.id','orders.updated_at','orders.order_status','orders.order_total','users.firstname','users.lastname','payment.payment_method','payment.payment_status')
+            ->orderBy('orders.id', 'desc')
             ->get();
         // dd($order);
         return view('shop.manage_order',compact('order'));
@@ -506,7 +507,6 @@ class ShopController extends Controller
             ->where('id', $order_id)
             ->update(['order_status' => 1]);
         return response()->json([
-            
             'status' => true
         ]);
     }
@@ -523,17 +523,16 @@ class ShopController extends Controller
        
         $order_detail = DB::table('order_detail')
             ->join('products', 'products.id', '=', 'order_detail.product_id')
-            ->join('products_combinations', 'products_combinations.combination_string', '=', 'order_detail.product_combination')
             ->where('order_id', $order_id)
-            ->select('products.price', 'previewImage', 'order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products.productName','products_combinations.avaiable_stock')
-            ->groupBy('products.price', 'previewImage','order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','products.productName','products_combinations.avaiable_stock')
+            ->select('order_detail.product_price', 'previewImage', 'order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','order_detail.product_name')
+            ->groupBy('order_detail.product_price', 'previewImage','order_detail.product_id','order_detail.product_combination','order_detail.product_quantity','order_detail.product_name')
             ->get();
         $ship_info = DB::table('orders')
             ->join('shipping', 'shipping.id', '=', 'orders.shipping_id')
             ->where('orders.id', $order_id)
             ->select('ship_name','ship_email','ship_address','ship_phonenumber','note')
             ->first();
-        // dd($ship_info);
+        // dd($order_detail);
         return view('shop.view_order_detail',compact('order_detail','ship_info'));
     }
     public function manage_order_cancel(){

@@ -49,7 +49,7 @@
     </header>
     <main >
         <div class="cart-center">
-        @if(Session::get('count_cart') != 0){
+        @if(Session::get('count_cart') != 0)
             <div class="page-cart">
 
                 <div class="cart-title">
@@ -68,7 +68,7 @@
                                             <a href="{{route('view_shop',$shop_cart -> shop_id)}}">
                                                 <img id="cart-table-left-shop-img" src="{{asset('storage/'.$shop_cart->product_cart[0]->shopImg )}}" alt="">
                                             </a>    
-                                            </div>
+                                        </div>
                                         <div class="cart-table-left-shop-name">
                                             <a  id="cart-table-left-shop-name" href="{{route('view_shop',$shop_cart -> shop_id)}}">
                                                 <span >{{$shop_cart->product_cart[0]->shopname }}</span>
@@ -196,7 +196,7 @@
                 </div>
                 </form>
             </div>
-        }@else
+        @else
         <div class="review_payment">
             <div class="thankfororder">
                 <div class="tick">

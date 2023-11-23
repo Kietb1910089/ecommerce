@@ -62,11 +62,11 @@ $("#form-detail").validate({
                     combination: combination,
                     avaiable_stock:avaiable_stock,
                     _token: _token,
-                },error(data) {
-                  
+                },error: function(data){
+                    var errors = data.responseJSON;
+                    console.log(errors);
                 },
                 success: function(data){
-                    
                     $status = data.status;
                     $message = data.message;
                     $count_cart = data.count_cart;
@@ -85,7 +85,7 @@ $("#form-detail").validate({
                             } 
                             
                         });
-                        // $('#count').html($count_cart);
+                        $('#count').html($count_cart);
                     }
                     else{
                         swal("Thất bại!", $message, "error");

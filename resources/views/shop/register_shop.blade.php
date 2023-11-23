@@ -19,6 +19,22 @@
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="{{asset('css/sb-admin-2.min.css')}}">
+    <style>
+		label.error{
+			color: red;
+            font-size: 14px;
+            display: block;
+            font-weight: 400;
+		}
+        .error {
+            color: #5a5c69;
+            /* font-size: 7rem; */
+            font-size: 16px;
+            line-height: 1;
+            position: relative;
+            width: 100%;
+        }
+	</style>
 </head>
 <style>
     .custom-file-upload{
@@ -50,21 +66,33 @@ input[type="file"]{
                         <div class="p-5">
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Đăng Ký Bán Hàng</h1>
+                                @php
+                                    $message = Session::get('message');
+                                    $error = Session::get('error');
+                                    if(isset($message)){
+                                        echo '<div class="alert alert-success" role="alert">'.$message.'</div>';
+                                        Session::put('message',null);
+                                    }
+                                    if(isset($error)){
+                                        echo '<div class="alert alert-danger" role="alert">'.$error.'</div>';
+                                        Session::put('error',null);
+                                    }
+                                @endphp
                             </div>
-                            <form class="user" action="{{route('registers_shop')}}" method="POST" enctype="multipart/form-data" >
+                            <form class="user" action="{{route('registers_shop')}}" method="POST" enctype="multipart/form-data" id="form_register_shop" >
                                 @csrf
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" required name="shopname" id="exampleFirstName"
+                                        <input type="text" class="form-control form-control-user"  name="shop_name" id="exampleFirstName"
                                             placeholder="Tên Shop">
                                     </div>
                                     <div class="col-sm-6" style="display:flex;" >
                                         <label for="up_img" class="custom-file-upload">
                                             <i class="fa fa-cloud-upload"></i> Đăng tải logo shop
                                         </label>
-                                        <input required name="shopImg" type="file" id="up_img" >
+                                        <input  name="shopImg" type="file" id="up_img"  required>
 
-                                        <img src="" id="logo_shop" style="width: 100px; height: 100px; display: none;">
+                                        <img src="" id="logo_shop" style="width: 100px; height: 100px; display: none;" >
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -73,11 +101,11 @@ input[type="file"]{
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input required name="password" type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Mật Khẩu">
+                                        <input  name="password" type="password" class="form-control form-control-user"
+                                            id="exampleInputPassword" placeholder="Mật Khẩu" name="password">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input required name="password_confirm" type="password" class="form-control form-control-user"
+                                        <input  name="password_confirm" type="password" class="form-control form-control-user" name="password_confirm"
                                             id="exampleRepeatPassword" placeholder="Nhập Lại Mật Khẩu">
                                     </div>
                                 </div>
@@ -117,6 +145,10 @@ input[type="file"]{
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <!-- include jQuery library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- include jQuery validate library -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function(){
         $('#up_img').change(function(){
@@ -137,6 +169,66 @@ input[type="file"]{
             }
         })
         })
+    </script>
+    <script>
+    $("#form_register_shop").validate({
+        rules: {
+            "shop_name": {
+                required: true,
+                maxlength: 20,
+            },
+            "shop_logo": {
+                required: true,
+                image: true,
+            },
+            "email": {
+                required: true,
+                email: true,
+            },
+            "password": {
+                required: true,
+                minlength: 6,
+            },
+            "password_confirm": { 
+                required: true,
+                equalTo: "#exampleInputPassword"
+            },
+            "shopImg":{ 
+                required: true,
+                image: true,
+            },
+        },
+        messages: {
+            "shop_name": {
+                required: "Vui lòng nhập tên người dùng",
+                maxlength: "Tên người dùng không được vượt quá 20 ký tự",
+            },
+            "shop_logo": {
+                required: "Vui lòng đăng tải ảnh ",
+                image: "Vui lòng đăng tải đúng định dạng ảnh",
+            },
+            "email": {
+                required: "Vui lòng nhập email ",
+                email: "Vui lòng nhập đúng định dạng email",
+            },
+            "password": {
+                required: "Vui lòng nhập mật khẩu",
+                minlength: "Mật khẩu phải có ít nhất 6 ký tự",
+            },
+            "password_confirm": {
+                required: "Vui lòng xác nhận lại mật khẩu",
+                equalTo: "Mật khẩu xác nhận không khớp",
+            },
+            "shopImg":{ 
+                required: "Vui lòng đăng tải logo shop ",
+                image: "Vui lòng đăng tải đúng định dạng ảnh",
+            },
+        },
+        submitHandler: function(form) {
+            $(form).submit();
+        }
+    
+    });
     </script>
 </body>
 

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('payment', function (Blueprint $table) {
             $table->id();
+            $table->integer('shop_id');
+            $table->integer('user_id');
             $table->integer('payment_method');
             $table->integer('payment_status');
             $table->timestamps();

@@ -18,15 +18,15 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="{{asset('css/sb-admin-2.min.css')}}">
+    
+    <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
 
 </head>
 
 <body class="bg-gradient-primary">
 
     <div class="container">
-
+    
         <!-- Outer Row -->
         <div class="row justify-content-center">
 
@@ -44,6 +44,18 @@
                                     </div>
                                     <form class="user" action="{{route('logins_shop')}}" method="POST">
                                         @csrf
+                                        @php
+                                            $message = Session::get('message');
+                                            $error = Session::get('error');
+                                            if(isset($message)){
+                                                echo '<div class="alert alert-success" role="alert">'.$message.'</div>';
+                                                Session::put('message',null);
+                                            }
+                                            if(isset($error)){
+                                                echo '<div class="alert alert-danger" role="alert">'.$error.'</div>';
+                                                Session::put('error',null);
+                                            }
+                                        @endphp
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"

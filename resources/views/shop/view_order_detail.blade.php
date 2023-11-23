@@ -117,7 +117,7 @@
                                                 <img src="{{asset('storage/'.$item->previewImage)}}" style="height:100px; widght:auto;"/>
                                             </td>
                                             <!-- Tên hàng -->
-                                            <td>{{$item->productName }}</td>
+                                            <td>{{$item->product_name }}</td>
                                             
                                             <!-- Phân loại hàng -->
                                             @if($item->product_combination == null)
@@ -129,14 +129,14 @@
                                             @endif
                                             <!-- Giá hàng -->
                                             <td>
-                                                {{$item->price}}
+                                                {{$item->product_price}}
                                             </td>
                                             <td>
                                                 {{$item->product_quantity}}
                                             </td>
                                             <!-- Tổng tiền hàng -->
                                             <td style="justify-content: center; align-items: flex-start; text-align: center;">
-                                                {{$item->price*$item->product_quantity}}
+                                                {{$item->product_price*$item->product_quantity}}
                                             </td>
                                         </tr>
                                         @endforeach
@@ -214,53 +214,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <!-- include Ajax  library -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script>
-    // $(document).ready(function(){
-    //     $('.accept_order').click(function(){
-    //         var order_id = $(this).data('order_id');
-    //         var _token = $('input[name="_token"]').val();
-    //         console.log(order_id);
-    //         swal("Xác Nhận Duyệt Đơn Hàng", {
-    //             buttons: {
-    //                 cancel: "Không",
-    //                 catch: {
-    //                 text: "Xác Nhận",
-    //                 value: "catch",
-    //                 },
-    //             },
-    //         })
-    //         .then((value) => {
-    //             switch (value) {
-    //                 case "catch":
-    //                 $.ajax({
-    //                     url: '{{route('accept_order')}}',
-    //                     method: 'POST',
-    //                     data:{
-    //                         order_id: order_id,
-    //                         _token: _token,
-    //                     },
-    //                     success: function(data){
-    //                         $status = data.status; 
-    //                         $product = data.product;
-    //                         if($status == true){
-    //                             location.reload();
-    //                         }
-    //                         else{
-    //                             swal("Số lượng tồn kho của "+$product+" không đủ để duyệt đơn hàng");
-    //                         }
-    //                     },
-    //                     error: function(data){
-    //                         var errors = data.responseJSON;
-    //                         console.log(errors);
-    //                     }
-    //                 });
-    //                 break;
-    //                 default:
-                      
-    //             }
-    //         });
-    //     });
-    // });
    
 </script>
 </body>

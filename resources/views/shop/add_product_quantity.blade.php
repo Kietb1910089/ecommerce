@@ -85,12 +85,12 @@
                         
                         <div class="card-body">
                             <div class="add_product_info"> 
-                                <p class="text-gray-900 p-3 m-0">Hình ảnh sản phẩm (tối đa 5 hình)</p>
+                                <p class="text-gray-900 p-3 m-0">Hình ảnh sản phẩm (Ít nhất 1 hình)</p>
                                 <div id="upfile">
                                     <div class="upfile" >
                                         <div class="uploadfile" id="uploadfile">
                                             <div class="image">
-                                                <img src="" alt="Image" id="fileup" class="fileup" >
+                                                <img src="" alt="Image"  id="fileup" class="fileup" required>
                                             </div>
                                             <div class="content">
                                                 <div class="icon">
@@ -104,7 +104,7 @@
                                     
                                         </div>
                                         <span onclick="defaultBtnActive()" class="custom-btn" id="custom-btn">Chọn Hình Ảnh</span>
-                                        <input id="default-btn" type="file" multiple="multiple" name="product_img" accept="image/jpeg, image/png, image/jpg" required hidden>
+                                        <input id="default-btn" required type="file" multiple="multiple" name="product_img" accept="image/jpeg, image/png, image/jpg"  hidden>
                                     </div>
                                     <div class="upfile" >
                                         <div class="uploadfile" id="uploadfile1">
@@ -197,7 +197,7 @@
                                             </td>
                 
                                             <td>
-                                                <input id="avaiable_stock" name='avaiable_stock[]'  type="number" class="form-control form-control-sm" min="1" value="1" max="10000" aria-controls="dataTable">
+                                                <input id="avaiable_stock" name='avaiable_stock[]'  type="number" class="form-control form-control-sm" min="0" value="1" max="10000" aria-controls="dataTable">
                                             </td>
                                         </tr>
                                         @endforeach
@@ -441,19 +441,25 @@
 <script>
 $("#add_quantity_product").validate({
     rules: {
-		"default-btn": {
-			required: true,
-		},
+		"product_img"{
+            required: true,
+        },
         "avaiable_stock": {
             required: true,
             number: true,
-            'min': 1,
+            'min': 0,
             'max': 100000,
 	    },
     },
     messages:{
-        "default-btn": {
-            required: "Ít nhất phải có 1 ảnh",
+        "product_img": {
+            required: "Vui lòng chọn ảnh",
+        },
+        "available_stock": {
+            required: "Vui lòng nhập số lượng",
+            number: "Vui lòng nhập số",
+            'min': "Số lượng phải lớn hơn hoặc bằng 0",
+            'max': "Số lượng phải nhỏ hơn 100000",
         },
     },
     submitHandler: function(form) {

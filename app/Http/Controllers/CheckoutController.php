@@ -135,4 +135,30 @@ class CheckoutController extends Controller
             ->get();
         return view('user.order_history', compact('order'));
     }
+    public function user_purchase(){
+        $user_id = Session::get('user_id');
+        $orders = DB::table('orders')
+            ->join('shop', 'shop.id', '=', 'orders.shop_id')
+            ->where('user_id', $user_id)
+            ->select('orders.id','orders.shop_id','orders.user_id','orders.order_status','orders.order_total','shop.shopname','shop.shopImg')
+            ->orderBy('orders.id', 'desc')
+            ->get();
+        $order_product = DB::table('order_detail')
+            ->join('orders', 'orders.id', '=', 'order_detail.order_id')
+            ->join('products','products.id', '=', 'order_detail.product_id')
+            ->where('order_detail.user_id', $user_id)
+            ->select('order_detail.*','orders.id','products.id','products.price','products.previewImage')
+            ->get();
+        foreach($orders as $key => $order){
+            $orders[$key]->order_product = DB::table('order_detail')
+                ->join('orders', 'orders.id', '=', 'order_detail.order_id')
+                ->join('products','products.id', '=', 'order_detail.product_id')
+                ->where('order_detail.user_id', $user_id)
+                ->where('order_detail.order_id', $order->id)
+                ->select('order_detail.*','orders.id','products.id','products.price','products.previewImage')
+                ->get();
+        }
+        // dd($orders);
+        return view('user.purchase', compact('orders','order_product'));
+    }
 }

@@ -20,18 +20,26 @@ class RegistersShopController extends Controller
         return view('shop.register_shop');
     }
     public function login_shop(){
+        if(Session::get('shop_id')){
+            return redirect()->back();
+        }
         return view('shop.login_shop');
     }
     public function registers_shop(Request $request){
-        $data=$request->validate([
-            'shopname' => 'required|max:50',
-            'email' => 'required|unique:shop,email',
-            'password' => 'required',
-            'password_confirm' => 'required|same:password',
-            'shopImg' => 'required',
-        ]);
+        $name_shop= Shop::select('shopname')->get();
+        foreach ($name_shop as $key => $value) {
+            if ($request->shop_name == $value->shopname) {
+                return redirect()->back()->with('error','Tên shop đã tồn tại') ;
+            }
+        }
+        $email= Shop::select('email')->get();
+        foreach ($email as $key => $value) {
+            if ($request->email == $value->email) {
+                return redirect()->back()->with('error','Email đã tồn tại') ;
+            }
+        }
         $shop = new Shop();
-        $shop->shopname = $request->shopname;
+        $shop->shopname = $request->shop_name;
         $shop->email = $request->email;
         $shop->password = Hash::make($request->password);
         if($request->hasFile('shopImg')){
@@ -39,7 +47,7 @@ class RegistersShopController extends Controller
             $shop->shopImg = $shop_img;
         }
         $shop->role_id =1;
-        $shop->status = 1;
+        $shop->status = 0; // chờ duyệt 1 là đã duyệt 2 là bị khóa
         $shop->save();
         return redirect()->route('login_shop')->with('success','Đăng ký thành công');
     }
@@ -49,16 +57,26 @@ class RegistersShopController extends Controller
         $password = $request->password;
         
         $result= DB::table('shop')->where('email',$email)->first();      
-
-        if(Hash::check($password, $result->password ) ){
-            Session:: put('shop_id',$result->id);
-            Session:: put('shop_name',$result->shopname);
-            Session:: put('shop_email',$result->email);
-            Session:: put('shopImg',$result->shopImg);
-            return redirect()->route('index_shop');
+        if ($result) {
+            if($result->status == 0){
+                return redirect()->route('login_shop')->with('error','Tài khoản đang chờ duyệt');
+            }
+            if($result->status == 2){
+                return redirect()->route('login_shop')->with('error','Tài khoản đã bị khóa');
+            }
+            if(Hash::check($password, $result->password ) ){
+                Session:: put('shop_id',$result->id);
+                Session:: put('shop_name',$result->shopname);
+                Session:: put('shop_email',$result->email);
+                Session:: put('shopImg',$result->shopImg);
+                return redirect()->route('index_shop');
+            }else{
+                return redirect()->route('login_shop')->with('error','Sai email hoặc mật khẩu');
+            }
         }else{
-            return redirect()->route('register_shop')->with('error','Đăng nhập thất bại');
+            return redirect()->route('login_shop')->with('error','Sai email hoặc mật khẩu');
         }
+        
     }
     public function logout_shop(){
         Session::put('shop_id',null);

@@ -52,7 +52,7 @@
                     </a>
                 </div>
                 <div class="colum-checkout">
-                    <a href="{{route('review_order')}}" class="back-a">
+                    <a href="{{route('user_purchase')}}" class="back-a">
                         XEM LẠI ĐƠN HÀNG<i class="fa-solid fa-chevron-right"></i>
                     </a>
                 </div>

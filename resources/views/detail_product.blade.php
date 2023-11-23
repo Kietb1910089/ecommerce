@@ -29,7 +29,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <link rel="stylesheet" href="{{asset('css/sweetalert.css')}}">
-    <title>Chi tiết sản phẩm</title>
+    <title>{{$products->productName}}</title>
 </head>
 <style>
     input[type="radio"] {
@@ -218,13 +218,13 @@
                                 <div class="zSXxlI" data-testid="seller_active_time_pdp">Online 3 giờ trước</div>
                             </div>
                             <div class="Uwka-w">
-                                <button type="button" class="btn btn-tinted btn--s btn--inline Q-sdJs" data-testid="shop_chat_now_button_pdp">
+                                <a href="{{route('show_chat',$shop->id)}}" class="btn btn-tinted btn--s btn--inline Q-sdJs" data-testid="shop_chat_now_button_pdp">
                                     <svg viewBox="0 0 16 16" class="shopee-svg-icon JWAQyX">
                                         <g fill-rule="evenodd">
                                         <path d="M15 4a1 1 0 01.993.883L16 5v9.932a.5.5 0 01-.82.385l-2.061-1.718-8.199.001a1 1 0 01-.98-.8l-.016-.117-.108-1.284 8.058.001a2 2 0 001.976-1.692l.018-.155L14.293 4H15zm-2.48-4a1 1 0 011 1l-.003.077-.646 8.4a1 1 0 01-.997.923l-8.994-.001-2.06 1.718a.5.5 0 01-.233.108l-.087.007a.5.5 0 01-.492-.41L0 11.732V1a1 1 0 011-1h11.52zM3.646 4.246a.5.5 0 000 .708c.305.304.694.526 1.146.682A4.936 4.936 0 006.4 5.9c.464 0 1.02-.062 1.608-.264.452-.156.841-.378 1.146-.682a.5.5 0 10-.708-.708c-.185.186-.445.335-.764.444a4.004 4.004 0 01-2.564 0c-.319-.11-.579-.258-.764-.444a.5.5 0 00-.708 0z"></path>
                                         </g>
                                     </svg>Chat ngay
-                                </button>
+                                </a>
                                 <a class="btn btn-light btn--s btn--inline btn-light--link Vf+pt4" data-testid="btn_light" href="{{route('view_shop',$shop->id)}}">
                                     <svg enable-background="new 0 0 15 15" viewBox="0 0 15 15" x="0" y="0" stroke-width="0" class="shopee-svg-icon _9Sz-n3">
                                         <path d="m13 1.9c-.2-.5-.8-1-1.4-1h-8.4c-.6.1-1.2.5-1.4 1l-1.4 4.3c0 .8.3 1.6.9 2.1v4.8c0 .6.5 1 1.1 1h10.2c.6 0 1.1-.5 1.1-1v-4.6c.6-.4.9-1.2.9-2.3zm-11.4 3.4 1-3c .1-.2.4-.4.6-.4h8.3c.3 0 .5.2.6.4l1 3zm .6 3.5h.4c.7 0 1.4-.3 1.8-.8.4.5.9.8 1.5.8.7 0 1.3-.5 1.5-.8.2.3.8.8 1.5.8.6 0 1.1-.3 1.5-.8.4.5 1.1.8 1.7.8h.4v3.9c0 .1 0 .2-.1.3s-.2.1-.3.1h-9.5c-.1 0-.2 0-.3-.1s-.1-.2-.1-.3zm8.8-1.7h-1v .1s0 .3-.2.6c-.2.1-.5.2-.9.2-.3 0-.6-.1-.8-.3-.2-.3-.2-.6-.2-.6v-.1h-1v .1s0 .3-.2.5c-.2.3-.5.4-.8.4-1 0-1-.8-1-.8h-1c0 .8-.7.8-1.3.8s-1.1-1-1.2-1.7h12.1c0 .2-.1.9-.5 1.4-.2.2-.5.3-.8.3-1.2 0-1.2-.8-1.2-.9z"></path>
@@ -237,7 +237,7 @@
                         <div class="Odudp+">
                             <div class="R7Q8ES _07yPll" data-testid="shop_ratings_section_pdp">
                                 <label class="siK1qW">Đánh giá</label>
-                                <span class="Xkm22X">3,3k</span>
+                                <span class="Xkm22X">chưa rõ</span>
                             </div>
                             <a class="p48aHT _07yPll" data-testid="shop_products_section_pdp" href="{{route('view_shop', $shop->id)}}">
                                 <label class="siK1qW">Sản phẩm</label>
@@ -247,7 +247,7 @@
                         <div class="Odudp+">
                             <div class="R7Q8ES _07yPll" data-testid="shop_response_rate_section_pdp">
                                 <label class="siK1qW">tỉ lệ phản hồi</label>
-                                <span class="Xkm22X">87%</span>
+                                <span class="Xkm22X">tốt</span>
                             </div>
                             <div class="R7Q8ES _07yPll" data-testid="shop_response_time_section_pdp">
                                 <label class="siK1qW">thời gian phản hồi</label>
@@ -261,7 +261,7 @@
                             </div>
                             <div class="R7Q8ES _07yPll" data-testid="shop_follower_section_pdp">
                                 <label class="siK1qW">Người theo dõi</label>
-                                <span class="Xkm22X">4,6k</span>
+                                <span class="Xkm22X">0</span>
                             </div>
                         </div>
                     </div>
@@ -276,33 +276,35 @@
                                 <div class="dR8kXc">
                                     <label class="zquA4o">Danh Mục</label>
                                     <div class="flex items-center RnKf-X">
-                                        <a class="akCPfg KvmvO1" href="/">Kenji</a>
+                                        <a class="akCPfg KvmvO1" href="{{route('index')}}">Kenji</a>
                                         <svg enable-background="new 0 0 11 11" viewBox="0 0 11 11" x="0" y="0" class="shopee-svg-icon xprSzi icon-arrow-right">
                                             <path d="m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z"></path>
                                         </svg>
-                                        <a class="akCPfg KvmvO1" href="/Thời-Trang-Nam-cat.11035567">Thời Trang Nam</a>
+                                        <a class="akCPfg KvmvO1" href="{{route('category_products',$category->categoryName)}}">{{$category->categoryName}}</a>
                                         <svg enable-background="new 0 0 11 11" viewBox="0 0 11 11" x="0" y="0" class="shopee-svg-icon xprSzi icon-arrow-right">
                                             <path d="m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z"></path>
                                         </svg>
-                                        <a class="akCPfg KvmvO1" href="/Áo-Khoác-cat.11035567.11035568">Áo Khoác</a>
-                                        <svg enable-background="new 0 0 11 11" viewBox="0 0 11 11" x="0" y="0" class="shopee-svg-icon xprSzi icon-arrow-right">
-                                            <path d="m2.5 11c .1 0 .2 0 .3-.1l6-5c .1-.1.2-.3.2-.4s-.1-.3-.2-.4l-6-5c-.2-.2-.5-.1-.7.1s-.1.5.1.7l5.5 4.6-5.5 4.6c-.2.2-.2.5-.1.7.1.1.3.2.4.2z"></path>
-                                        </svg>
-                                        <a class="akCPfg KvmvO1" href="/Áo-Khoác-Mùa-Đông-Áo-Choàng-cat.11035567.11035568.11035569">Áo Khoác Mùa Đông &amp; Áo Choàng</a>
+                                        <a class="akCPfg KvmvO1" href="{{route('category_products',$category->categoryName)}}">{{$subcategory->subCategoryName}}</a>
+                
                                     </div>
                                 </div>
-                                <div class="dR8kXc">
+                                <!-- <div class="dR8kXc">
                                     <label class="zquA4o">Địa chỉ tổ chức chịu trách nhiệm sản xuất</label>
                                     <div>Đang cập nhật</div>
                                 </div>
                                 <div class="dR8kXc">
                                     <label class="zquA4o">Chất liệu</label>
                                     <div>Nỉ, Da</div>
+                                </div> -->
+                                <div class="dR8kXc">
+                                    <label class="zquA4o">Tồn kho</label>
+                                    <div>{{$sum_avaialbe}}</div>
                                 </div>
                                 <div class="dR8kXc">
-                                    <label class="zquA4o">Chiều dài tay áo</label>
-                                    <div>Khác</div>
-                                </div><div class="dR8kXc"><label class="zquA4o">Mẫu</label><div>Sọc</div></div><div class="dR8kXc"><label class="zquA4o">Phong cách</label><div>Thể thao, Hàn Quốc, Đường phố</div></div><div class="dR8kXc"><label class="zquA4o">Xuất xứ</label><div>Việt Nam</div></div><div class="dR8kXc"><label class="zquA4o">Kiểu Áo khoác</label><div>Áo khoác bomber</div></div><div class="dR8kXc"><label class="zquA4o">Tên tổ chức chịu trách nhiệm sản xuất</label><div>Đang cập nhật</div></div><div class="dR8kXc"><label class="zquA4o">Kho hàng</label><div>91377</div></div><div class="dR8kXc"><label class="zquA4o">Gửi từ</label><div>Huyện Xuân Trường, Nam Định</div></div></div></div>
+                                    <label class="zquA4o">Mô tả</label>
+                                    <div>{{$products->description}}</div>
+                                </div>
+                               
                     </div>
                 </div>
                 <div class="page-product__content--right colum-2-5">

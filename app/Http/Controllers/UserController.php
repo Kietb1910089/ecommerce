@@ -27,6 +27,7 @@ class UserController extends Controller
     public function index()
     {
         Session::forget('product_id');
+        $category = Categories::select('id', 'categoryName','categoryIcon')->get();
         $products = DB::table('products')
             ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
             ->where('products.status', '=', 1)
@@ -35,25 +36,31 @@ class UserController extends Controller
             ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
             ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
             ->orderBy('id', 'desc')-> paginate(54);
-
-        return view('index', compact('products'));
+        // dd($category);
+        return view('index', compact('products','category'));
     }
     public function detail_product($product_id)
     {
         $products = DB::table('products')
             ->where('id', $product_id)->first();
-            
+        if($products->status != 1){
+            return redirect()->back()->with('error', 'Sản phẩm đã ngừng kinh doanh');
+        }
         $products_images = DB::table('products_images')
             ->where('product_id', $product_id)
             ->select('products_images.imageProduct')
             ->get();
         $shop = DB::table('shop')
             ->where('id', $products->shop_id)
-            ->select('shop.id', 'shop.shopname','shop.shopImg','shop.email')
+            ->select('shop.id', 'shop.shopname','shop.shopImg','shop.email','shop.status')
             ->first();
+        if($shop->status != 1){
+            return redirect()->back()->with('error', 'Cửa hàng đã ngừng kinh doanh');
+        }
         $product_count = DB::table('products')
             ->where('shop_id', $shop->id)
             ->count();
+        
         $join_date = DB::table('shop')
             ->where('id', $shop->id)
             ->select('created_at')
@@ -63,6 +70,7 @@ class UserController extends Controller
             ->where('product_id', $product_id)
             ->select('products_variations_options.variationName')
             ->get();
+            
         $product_sale = DB::table('products')
             ->join('order_detail', 'products.id', '=', 'order_detail.product_id', )
             ->where('products.id', $product_id)
@@ -72,18 +80,22 @@ class UserController extends Controller
             ->where('product_id', $product_id)
             ->select('products_combinations.combination_string', 'products_combinations.avaiable_stock', 'products_combinations.id','products_combinations.product_id')
             ->get();
-        // dd($product_sale);
+        
         $sum_avaialbe = DB::table('products_combinations')
             ->where('product_id', $product_id)
             ->sum('avaiable_stock');
         Session::put('product_id', $product_id);
-        return view('detail_product', compact('products', 'products_images', 'shop', 'var_option', 'combination_string', 'sum_avaialbe', 'product_count', 'created_at','product_sale'));
+        $category = DB::table('categories')->where('id', $products->category_id)->first();
+        $subcategory = DB::table('subcategories')->where('id', $products->subcategory_id)->first();
+        // dd($sum_avaialbe);
+
+        return view('detail_product', compact('products', 'products_images', 'shop', 'var_option', 'combination_string', 'sum_avaialbe', 'product_count', 'created_at','product_sale','category','subcategory'));
 
     }
     public function add_cart_ajax(Request $request){
+        $user_id = Session::get('user_id');
         $data=$request->all();
         $session_id=substr(md5(microtime()),rand(0,26),5);
-        $user_id = Session::get('user_id');
         $product_id = Session::get('product_id');
         $cart = DB::table('cart')
             ->where('user_id', $user_id)
@@ -184,8 +196,11 @@ class UserController extends Controller
     public function view_shop($shop_id){
         $shop_info = DB::table('shop')
             ->where('id', $shop_id)
-            ->select('shop.id', 'shop.shopname','shop.shopImg','shop.email')
+            ->select('shop.id', 'shop.shopname','shop.shopImg','shop.email','shop.status')
             ->first();
+        if ($shop_info->status != 1) {
+            return redirect()->back()->with('error', 'Cửa hàng đã ngừng kinh doanh');
+        }
         $product_count = DB::table('products')
             ->where('shop_id', $shop_id)
             ->count();
@@ -224,15 +239,7 @@ class UserController extends Controller
         $data = request()->all();
         $shop_id = $data['shop_id'];
         $subcategory_id = $data['subcategory_id'];
-        $shop_info = DB::table('shop')
-            ->where('id', $data['shop_id'])
-            ->select('shop.id', 'shop.shopname','shop.shopImg','shop.email')
-            ->first();
-        $shop_category = DB::table('products')
-            ->where('products.shop_id', $data['shop_id'])
-            ->select( 'subcategory_id', 'subCategoryName')
-            ->groupBy('subcategory_id', 'subCategoryName')
-            ->get();
+        
         $product_shop = DB::table('products')
             ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
             ->where('products.shop_id', $data['shop_id'])
@@ -240,86 +247,172 @@ class UserController extends Controller
             ->where('products.status', 1)
             ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
             ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('id', 'desc')
-            ->paginate(1);
-        $html = view('user.ajax_shop',compact('product_shop','shop_info','shop_category','shop_id',))->render();
+            ->orderBy('id', 'asc')
+            ->paginate(30);
+        $html = view('user.ajax_shop',compact('product_shop','shop_id','subcategory_id'))->render();
         return response()->json (['html' => $html]);
     }
     public function choose_popular(){
         $data = request()->all();
-        $product_shop = DB::table('products')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->where('products.shop_id', $data['shop_id'])
-            ->where('products.status', 1)
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('id', 'asc')
-            ->paginate(30);
-        $html = view('user.ajax_shop',compact('product_shop'))->render();
-        return response()->json (['html' => $html]);
+        $shop_id = $data['shop_id'];
+        $arrange = $data['arrange'];
+        if(isset($data['subcategory_id'])){
+            $subcategory_id = $data['subcategory_id'];
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->where('subcategory_id', $subcategory_id)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('id', 'asc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange','subcategory_id'))->render();
+            return response()->json (['html' => $html]);
+        }else{
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('id', 'asc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange'))->render();
+            return response()->json (['html' => $html]);
+        }
     }
     public function choose_newest(){
         $data = request()->all();
-        $product_shop = DB::table('products')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->where('products.shop_id', $data['shop_id'])
-            ->where('products.status', 1)
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('id', 'desc')
-            ->paginate(30);
-        $html = view('user.ajax_shop',compact('product_shop'))->render();
-        return response()->json (['html' => $html]);
+        $shop_id = $data['shop_id'];
+        $arrange = $data['arrange'];
+        if(isset($data['subcategory_id'])){
+            $subcategory_id = $data['subcategory_id'];
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->where('subcategory_id', $subcategory_id)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('id', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange','subcategory_id'))->render();
+            return response()->json (['html' => $html]);
+        }else{
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('id', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange'))->render();
+            return response()->json (['html' => $html]);
+        }
     }
     public function choose_best_sell(){
         $data = request()->all();
-        $product_shop = DB::table('products')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->where('products.shop_id', $data['shop_id'])
-            ->where('products.status', 1)
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('sales_quantity', 'desc')
-            ->paginate(30);
-        $html = view('user.ajax_shop',compact('product_shop'))->render();
-        return response()->json (['html' => $html]);
+        $shop_id = $data['shop_id'];
+        $arrange = $data['arrange'];
+        if(isset($data['subcategory_id'])){
+            $subcategory_id = $data['subcategory_id'];
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->where('subcategory_id', $subcategory_id)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('sales_quantity', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange','subcategory_id'))->render();
+            return response()->json (['html' => $html]);
+        }else{
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('sales_quantity', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange'))->render();
+            return response()->json (['html' => $html]);
+        }
+
     }
     public function choose_high_low(){
         $data = request()->all();
-        $product_shop = DB::table('products')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->where('products.shop_id', $data['shop_id'])
-            ->where('products.status', 1)
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('products.price', 'desc')
-            ->paginate(30);
-        $html = view('user.ajax_shop',compact('product_shop'))->render();
-        return response()->json (['html' => $html]);
+        $shop_id = $data['shop_id'];
+        $arrange = $data['arrange'];
+        if(isset($data['subcategory_id'])){
+            $subcategory_id = $data['subcategory_id'];
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->where('subcategory_id', $subcategory_id)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('products.price', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange','subcategory_id'))->render();
+            return response()->json (['html' => $html]);
+        }else{
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('products.price', 'desc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange'))->render();
+            return response()->json (['html' => $html]);
+        }
     }
     public function choose_low_high(){
         $data = request()->all();
-        $product_shop = DB::table('products')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->where('products.shop_id', $data['shop_id'])
-            ->where('products.status', 1)
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('products.price', 'asc')
-            ->paginate(30);
-        $html = view('user.ajax_shop',compact('product_shop'))->render();
-        return response()->json (['html' => $html]);
+        $shop_id = $data['shop_id'];
+        $arrange = $data['arrange'];
+        if(isset($data['subcategory_id'])){
+            $subcategory_id = $data['subcategory_id'];
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->where('subcategory_id', $subcategory_id)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('products.price', 'asc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange','subcategory_id'))->render();
+            return response()->json (['html' => $html]);
+        }else{
+            $product_shop = DB::table('products')
+                ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
+                ->where('products.shop_id', $data['shop_id'])
+                ->where('products.status', 1)
+                ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
+                ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
+                ->orderBy('products.price', 'asc')
+                ->paginate(30);
+            $html = view('user.ajax_shop',compact('product_shop','shop_id','arrange'))->render();
+            return response()->json (['html' => $html]);
+        }
     }
-    public function search(){
-        $keyword = request()->keyword;
-        $products = Products::where('productName', 'like', '%' . $keyword . '%')
-            ->leftjoin('order_detail', 'order_detail.product_id', '=', 'products.id')
-            ->select('products.id', 'products.productName', 'products.price', 'products.previewImage',DB::raw('SUM(order_detail.product_quantity) as sales_quantity'))
-            ->groupBy('products.id','products.price', 'products.productName', 'products.previewImage')
-            ->orderBy('id', 'asc')
-            ->where('products.status', 1)
-            ->paginate(30);
-        
-        return  view('user.search')->with(compact('products', 'keyword'));
+    public function user_cancel_order(Request $request){
+        $user_id = Session::get('user_id');
+        $order_id = $request->order_id;
+        $order = DB::table('orders')
+            ->where('id', $order_id)
+            ->where('user_id', $user_id)
+            ->update(['order_status' => 2]);
+        return response()->json([
+            'status' => true
+        ]);
     }
+    
 } 

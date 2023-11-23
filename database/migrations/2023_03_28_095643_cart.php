@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('product_price');
             $table->string('combination');
             $table->string('product_image');
+            $table->string('avaialbe_stock');
             $table->timestamps();
         });
     }

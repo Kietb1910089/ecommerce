@@ -72,6 +72,7 @@
                                             <th>Tổng Giá Tiền</th>
                                             <th>Tình Trạng Đơn</th>
                                             <th>Thanh Toán</th>
+                                            <th>Thời gian đặt</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </thead>
@@ -81,6 +82,7 @@
                                             <th>Tổng Giá Tiền</th>
                                             <th>Tình Trạng Đơn</th>
                                             <th>Thanh Toán</th>
+                                            <th>Thời Gian Đặt</th>
                                             <th>Thao Tác</th>
                                         </tr>
                                     </tfoot>
@@ -109,8 +111,11 @@
                                             @if($item->payment_status == 0)
                                                 <td>Thanh toán khi nhận hàng</td>
                                             @else
-                                                <td>Thanh toán vhuyển khoản</td>
+                                                <td>Thanh toán chuyển khoản</td>
                                             @endif
+                                            <td>
+                                                {{date('d/m/Y  H:i:s', strtotime($item->updated_at))}}
+                                            </td>
                                             
                                             @if($item->order_status == 0 )
                                             <td style="justify-content: center; align-items: flex-start; text-align: center;">

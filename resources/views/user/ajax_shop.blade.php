@@ -31,4 +31,9 @@
                                     </a>
                                 </div>
                                 @endforeach
-                                
+                                @if(isset($subcategory_id))
+                                    <input type="hidden" id="subcategory_id" value="{{$subcategory_id}}"/>
+                                @endif
+                                @if(isset($arrange))
+                                    <input type="hidden" id="arrange" value="{{$arrange}}"/>
+                                @endif
